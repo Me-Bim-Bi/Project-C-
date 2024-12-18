@@ -1,0 +1,21 @@
+# ninja log v6
+915	992	1734464851952816804	ProjectFashionStore	f48a662009a69b97
+11	1695	1734464254068164929	CMakeFiles/ProjectFashionStore.dir/Clothing.cpp.o	e4d715d564bd1a24
+9	1694	1734464254066081325	CMakeFiles/ProjectFashionStore.dir/Product.cpp.o	4909474369870782
+5	999	1734464778431852325	CMakeFiles/ProjectFashionStore.dir/ProductHandler.cpp.o	d820fa22c3644c75
+5	914	1734464851042680825	CMakeFiles/ProjectFashionStore.dir/main.cpp.o	c2ccef24add46e35
+6	934	1734441220958121843	CMakeFiles/ProjectFashionStore.dir/Menu.cpp.o	77c68fc3ca8c00c
+10	1708	1734464254066550508	CMakeFiles/ProjectFashionStore.dir/Cosmetic.cpp.o	b9207de66a3edbb0
+2	141	1734467395205828864	build.ninja	568b0eeb5b6b8ac3
+24	1780	1734469620386765358	CMakeFiles/ProjectFashionStore.dir/Menu.cpp.o	77c68fc3ca8c00c
+22	1805	1734469620384763575	CMakeFiles/ProjectFashionStore.dir/Cosmetic.cpp.o	b9207de66a3edbb0
+21	1812	1734469620383756232	CMakeFiles/ProjectFashionStore.dir/Product.cpp.o	4909474369870782
+19	1815	1734469620381512611	CMakeFiles/ProjectFashionStore.dir/main.cpp.o	c2ccef24add46e35
+23	1815	1734469620386057614	CMakeFiles/ProjectFashionStore.dir/Clothing.cpp.o	e4d715d564bd1a24
+21	1913	1734469620383326555	CMakeFiles/ProjectFashionStore.dir/ProductHandler.cpp.o	d820fa22c3644c75
+1913	2001	1734469622275391578	ProjectFashionStore	f48a662009a69b97
+4	797	1734470567961797158	CMakeFiles/ProjectFashionStore.dir/main.cpp.o	c2ccef24add46e35
+797	864	1734470568754606031	ProjectFashionStore	f48a662009a69b97
+5	1010	1734471148098126804	CMakeFiles/ProjectFashionStore.dir/main.cpp.o	c2ccef24add46e35
+5	1142	1734471148098597482	CMakeFiles/ProjectFashionStore.dir/ProductHandler.cpp.o	d820fa22c3644c75
+1142	1225	1734471149235201741	ProjectFashionStore	f48a662009a69b97
