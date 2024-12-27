@@ -12,18 +12,19 @@ private:
 	string size;
 	string colour;
 public:
-	Clothing(int id, const string& name, float price, const string& brand,
-		int quantity, const string& size, const string& colour);
-	Clothing();
+	Clothing(int id, const string& name, float purchasePrice, float sellingPrice, const string& brand,
+		int quantity, int quantitySold, int quantityPurchased, const string& size = "?", const string& colour = "?");
+
 	string getSize() const;
 	string getColour() const;
 
 	void setSize(const string& size);
 	void setColour(const string& colour);
-	void editInfo() override;
-	//bool operator ==(const Clothing& other) const override;
 
+	void editInfoButNotID() override;
+	bool operator ==(const Product& other) const override;
 	string showInfo() const override;
+
 	Product* clone() const override;
 
 

@@ -7,6 +7,8 @@
 #include "Product.h"
 #include "Clothing.h"
 #include "Cosmetic.h"
+#include "Employee.h"
+#include "EmployeeHandler.h"
 #include "ProductHandler.h"
 #include "Menu.h"
 
@@ -32,8 +34,8 @@ int main() {
 			cin.clear();
 			cin.ignore();
 		}
-		if(!cin.fail() && answer < 15 && answer > 0) {
-			if(answer == 14) {
+		if(!cin.fail() && answer < 18 && answer > 0) {
+			if(answer == 17) {
 				isWorking = false;
 			}
 			else if (answer == 1){
@@ -47,17 +49,18 @@ int main() {
 			}
 		}
 	}*/
-	ProductHandler abd;
-	abd.addProduct(new Clothing (123, "Klänning", 123.5f, "Lindex", 3, "M", "Rosa"));
-	abd.addProduct(new Clothing (123, "Tröja", 123.5f, "Zara", 3, "M", "Rosa"));
-	abd.addProduct(new Clothing (456, "Vaska", 123.5f, "HM", 3, "M", "Rosa"));
-	abd.addProduct(new Cosmetic (789, "solkräm", 123.5f, "ACo", 3, "solkräm"));
-	abd.showProduct();
-	cout << endl;
-	cout << endl;
+	EmployeeHandler abd;
+	abd.addEmployee(1201,"chu ha thanh", 14750);
+	abd.addEmployee(926,"tran quang huy", 32000);
+	abd.addEmployee(1006,"tran dieu uyen", 20000);
+	abd.addEmployee(1030,"tran phuong linh", 21302);
 
-	abd.editProduct(3);
-	abd.showProduct();
+	abd.showInfo();
+	cout << endl;
+	cout << endl;
+	abd.findEmployee(1006);
+	cout << endl;
+	cout << endl;
 
 	//man skulle fråga om användaren vill tillägga Clothing eller Cosmetic. Sedan skapar man det i Managment.
 	//Managment behöver vara en source file eller en klass?

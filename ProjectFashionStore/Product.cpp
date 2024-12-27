@@ -4,11 +4,14 @@
 
 #include "Product.h"
 #include <iostream>
+#include "ProductHandler.h"
 
 using namespace std;
 
-Product::Product(int id, const string& name, float price, const string& brand, int quantity):
-id(id), name(name), price(price), brand(brand), quantity(quantity){
+Product::Product(int id, const string& name, float purchasePrice, float sellingPrice, const string& brand,
+	int quantity, int quantitySold, int quantityPurchased): id(id), name(name), purchasePrice(purchasePrice),
+sellingPrice(sellingPrice), brand(brand), quantity(quantity), quantitySold(quantitySold),
+quantityPurchased(quantityPurchased){
 }
 
 Product::~Product() {
@@ -22,8 +25,12 @@ string Product::getName() const {
 	return this->name;
 }
 
-float Product::getPrice() const {
-	return this->price;
+float Product::getPurchasePrice() const {
+	return this->purchasePrice;
+}
+
+float Product::getSellingPrice() const {
+	return this->sellingPrice;
 }
 
 string Product::getBrand() const {
@@ -34,6 +41,14 @@ int Product::getQuantity() const {
 	return this->quantity;
 }
 
+int Product::getQuantitySold() const {
+	return this->quantitySold;
+}
+
+int Product::getQuantityPurchased() const {
+	return this->quantityPurchased;
+}
+
 void Product::setID(int id) {
 	this->id = id;
 }
@@ -42,9 +57,14 @@ void Product::setName(const string &name) {
 	this->name = name;
 }
 
-void Product::setPrice(float price) {
-	this->price = price;
+void Product::setPurchasePrice(float purchasePrice) {
+	this->purchasePrice = purchasePrice;
 }
+
+void Product::setSellingPrice(float sellingPrice) {
+	this->sellingPrice = sellingPrice;
+}
+
 
 void Product::setBrand(const string &brand) {
 	this->brand = brand;
@@ -54,30 +74,66 @@ void Product::setQuantity(int quantity) {
 	this->quantity = quantity;
 }
 
-void Product::editInfo(){
-	cout << "Enter new information to update the product: " << endl;
-	cout << "ID: ";
-	cin >> id;
+void Product::setQuantitySold(int quantitySold) {
+	this->quantitySold = quantitySold;
+}
+
+void Product::setQuantityPurchased(int quantityPurchased) {
+	this->quantityPurchased = quantityPurchased;
+}
+
+void Product::editInfoButNotID(){
 	cin.ignore();
 	cout << "\nName: ";
 	getline(cin, name);
-	cout << "\nPrice: ";
-	cin >> price;
+	cout << "\nPurchase price: ";
+	cin >> purchasePrice;
+	cin.ignore();
+	cout << "\nSelling price: ";
+	cin >> sellingPrice;
 	cin.ignore();
 	cout << "\nBrand: ";
 	getline(cin, brand);
-	cout << "\nQuantity: ";
+	cout << "\nQuantity in stock: ";
 	cin >> quantity;
+	cin.ignore();
+	cout << "\nQuantity sold: ";
+	cin >> quantitySold;
+	cin.ignore();
+	cout << "\nQuantity purchased: ";
+	cin >> quantityPurchased;
 	cin.ignore();
 }
 
-string Product::showInfo() const {
-	return "Name: " + name + ", id: " + to_string(id) + ", brand: "
-	+ brand + ", price: " + to_string(price) + ", quantity: " + to_string(quantity);
+bool Product::operator==(const Product &other) const {
+	return id == other.id &&
+		name == other.name &&
+			purchasePrice == other.purchasePrice &&
+				sellingPrice == other.sellingPrice &&
+					brand == other.brand &&
+						quantity == other.quantity &&
+							quantitySold == other.quantitySold;
 }
 
-float Product::totalPrice() const {
-	return this->price * static_cast<float>(this->quantity);
+float Product::totalCostOfGoods() const {
+	return purchasePrice*(quantity + quantityPurchased);
+}
+
+float Product::totalRevenue() const {
+	return sellingPrice*quantitySold;
+}
+
+int Product::endOfDayInventory() const {
+	int quantityEndOfDay = quantity + quantityPurchased - quantitySold;
+	return quantityEndOfDay;
+}
+
+string Product::showInfo() const {
+	return name + ", id: " + to_string(id) + ", brand: "
+	+ brand + ", purchase price: " + to_string(purchasePrice) + ", selling price: " +
+		to_string(sellingPrice) +", \n\tbeginning inventory: " + to_string(quantity)
+	+ ", numbers of goods imported: " + to_string(quantityPurchased)
+	+ ", number of goods sold: " + to_string(quantitySold);
 }
 
 Product * Product::clone() const {

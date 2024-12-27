@@ -13,34 +13,44 @@ class Product {
 private:
 	int id;
 	string name;
-	float price;
+	float purchasePrice;
+	float sellingPrice;
 	string brand;
 	int quantity;
+	int quantitySold;
+	int quantityPurchased;
 public:
-	Product(int id = -1, const string& name = "?", float price = 0.0f, const string& brand = "?", int quantity = 0);
+	Product(int id = -1, const string& name = "?", float purchasePrice = 0.0f, float sellingPrice = 0.0f,
+		const string& brand = "?", int quantity = 0, int quantitySold = 0, int quantityPurchased = 0);
 	virtual ~Product();
 
 	int getID() const;
 	string getName() const;
-	float getPrice() const;
+	float getPurchasePrice() const;
+	float getSellingPrice() const;
 	string getBrand() const;
 	int getQuantity() const;
+	int getQuantitySold() const;
+	int getQuantityPurchased() const;
 
 	void setID(int id);
 	void setName(const string& name);
-	void setPrice(float price);
+	void setPurchasePrice(float price);
+	void setSellingPrice(float sellingPrice);
 	void setBrand(const string& brand);
 	void setQuantity(int quantity);
+	void setQuantitySold(int quantitySold);
+	void setQuantityPurchased(int quantityPurchased);
 
-	virtual void editInfo() = 0;
-	//virtual bool operator ==(const Product& other) const = 0;
+	virtual void editInfoButNotID() = 0;
+	virtual bool operator ==(const Product& other) const = 0;
 
-	float totalPrice() const;
+	float totalCostOfGoods() const;
+	float totalRevenue() const;
+	int endOfDayInventory() const;
 
 	virtual string showInfo() const = 0;
 	virtual Product* clone() const = 0;
-	//void sendToFile(string fileName = "product.txt");
-	//void readFromFile(string fileName = "product.txt");
 };
 
 

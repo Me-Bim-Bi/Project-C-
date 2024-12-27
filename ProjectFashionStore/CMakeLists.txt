@@ -9,4 +9,10 @@ add_executable(ProjectFashionStore main.cpp
         Cosmetic.cpp
         Clothing.cpp
         Menu.h
-        Menu.cpp)
+        Menu.cpp
+        Management.h
+        Management.cpp
+        Employee.h
+        EmployeeHandler.h
+        Employee.cpp
+        EmployeeHandler.cpp)

@@ -10,16 +10,27 @@
 class ProductHandler {
 private:
 	vector<Product*> products;
+
 	bool askYesNo(const string& question);
+	int findIndexProduct(int id) const;
+
 public:
 	ProductHandler();
 	~ProductHandler();
-	void addProduct(Product* product);
-	void findProduct(int id);
-	void removeProduct(const int index);
-	void editProduct(const int index);
-	float totalPrice() const;
+
+	void importProduct(Product* product);
+	void findAndShowProduct(int id) const;
+	void removeProduct(int id);
+	void editProductId(int id);
+	void editProductButNotID(int id);
+
+	void sellProduct(int idProduct, int quantitySale, int idEmployee);
+	float totalCostOfProducts() const;
+	float totalRevenue() const;
+
 	void showProduct () const;
+
+	//void updateSourceFile(string fileName);
 
 	/*
 		int findClothing(int id, const string& name, float price, const string& brand,

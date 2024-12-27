@@ -8,11 +8,9 @@
 
 using namespace std;
 
-Cosmetic::Cosmetic(int id, const string &name, float price, const string &brand, int quantity,
-	const string &type):Product(id, name, price, brand, quantity), type(type){
-}
-
-Cosmetic::Cosmetic():Product(), type("?") {
+Cosmetic::Cosmetic(int id, const string& name, float purchasePrice, float sellingPrice, const string& brand,
+		int quantity, int quantitySold, int quantityPurchased, const string& type):Product(id, name, purchasePrice,sellingPrice,
+			brand, quantity, quantitySold, quantityPurchased), type(type){
 }
 
 string Cosmetic::getType() const {
@@ -23,17 +21,19 @@ void Cosmetic::setType(const string& type) {
 	this->type = type;
 }
 
-void Cosmetic::editInfo() {
-	Product::editInfo();
+bool Cosmetic::operator==(const Product &other) const {
+	const Cosmetic* otherClothing = dynamic_cast<const Cosmetic*>(&other);
+	return otherClothing && Product::operator==(*otherClothing) &&
+		type == otherClothing->type;
+}
+
+void Cosmetic::editInfoButNotID() {
+	cout << "Enter new information to update the product: ";
+	Product::editInfoButNotID();
 	cout << "\nType: ";
 	getline(cin, type);
 }
 
-/*bool Cosmetic::operator==(const Cosmetic &other) const {
-	return Product::operator==(other)
-	&& this->type == other.type;
-}
-*/
 string Cosmetic::showInfo() const {
 	return "Cosmetic: " + Product::showInfo() + ", type: " + type;
 }
