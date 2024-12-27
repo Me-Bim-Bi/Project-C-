@@ -158,14 +158,20 @@ void ProductHandler::editProduct(const int id) {
 	}
 }
 
-void ProductHandler::sellProduct(int idProduct, int quantitySale, int idEmployee) {
+void ProductHandler::sellProduct(int idProduct, int quantitySale, int idEmployee, EmployeeHandler& emp) {
 	int index = findIndexProduct(idProduct);
 	if(index != -1) {
 		int quantityInStock = products[index]->getQuantityBeginningInventory()+products[index]->getQuantityImported();
 		int totalQuantitySold = products[index]->getQuantitySold()+quantitySale;
 		if(totalQuantitySold <= quantityInStock) {
 			products[index]->setQuantitySold(totalQuantitySold);
-			//float employeeCommission = (products[index]->getSellingPrice() * quantitySale) * 0.02;
+			if(emp.callFindIdIndex(idEmployee) != -1) {
+				float employeeCommission = (products[index]->getSellingPrice() * quantitySale) * 0.02;
+				emp.addCommission(idEmployee,employeeCommission);
+			}
+			else {
+				cout << "The employee's ID " << idEmployee << " was not found. The commission has not been credited to anyone." << endl;
+			}
 		}
 		else {
 			cout << "The product with id " << idProduct << " is out of stock." << endl;

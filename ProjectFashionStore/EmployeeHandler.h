@@ -30,6 +30,8 @@ public:
 	void findEmployeeAndShowInfo(int id) const;
 	void addCommission(int id, float salesCommission);
 
+	int callFindIdIndex(int id) const;
+
 	void showInfo() const;
 
 };

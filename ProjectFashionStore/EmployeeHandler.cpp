@@ -166,6 +166,10 @@ void EmployeeHandler::addCommission(int id, float salesCommission) {
 	}
 }
 
+int EmployeeHandler::callFindIdIndex(int id) const {
+	return findIdIndex(id);
+}
+
 void EmployeeHandler::showInfo() const {
 	for (int i = 0; i < nrOfCurrent; i++) {
 		cout << employees[i]->showInfo() << endl;

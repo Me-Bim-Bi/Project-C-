@@ -76,8 +76,19 @@ int main() {
 	abd.showProduct();
 	cout << endl;
 	cout << endl;
-	abd.sellProduct(345,4,3234);
+	abd.sellProduct(3457,5,1006,emHandler);
+	abd.sellProduct(123,1,1006,emHandler);
+	abd.sellProduct(345,5,1006,emHandler);
 	abd.showProduct();
+	emHandler.showInfo();
+	cout << endl;
+	cout << endl;
+	abd.sellProduct(3457,5,1030,emHandler);
+	abd.sellProduct(123,1,1030,emHandler);
+	abd.sellProduct(345,5,1030,emHandler);
+
+	abd.showProduct();
+	emHandler.showInfo();
 
 
 	//man skulle fråga om användaren vill tillägga Clothing eller Cosmetic. Sedan skapar man det i Managment.

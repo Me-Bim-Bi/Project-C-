@@ -24,7 +24,7 @@ public:
 	void editProductId(int id);
 	void editProduct(int id);
 
-	void sellProduct(int idProduct, int quantitySale, int idEmployee);
+	void sellProduct(int idProduct, int quantitySale, int idEmployee, EmployeeHandler& emp);
 	float totalCostOfProducts() const;
 	float totalRevenue() const;
 
