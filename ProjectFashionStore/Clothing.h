@@ -13,7 +13,7 @@ private:
 	string colour;
 public:
 	Clothing(int id, const string& name, float purchasePrice, float sellingPrice, const string& brand,
-		int quantity, int quantitySold, int quantityPurchased, const string& size = "?", const string& colour = "?");
+		int quantityBeginningInventory, int quantitySold, int quantityImported, const string& size = "?", const string& colour = "?");
 
 	string getSize() const;
 	string getColour() const;

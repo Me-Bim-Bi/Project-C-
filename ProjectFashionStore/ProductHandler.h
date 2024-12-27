@@ -5,30 +5,33 @@
 #ifndef PRODUCTHANDLER_CPP
 #define PRODUCTHANDLER_CPP
 #include "Product.h"
+#include "EmployeeHandler.h"
 #include <vector>
 
 class ProductHandler {
 private:
 	vector<Product*> products;
-
-	bool askYesNo(const string& question);
 	int findIndexProduct(int id) const;
-
 public:
 	ProductHandler();
 	~ProductHandler();
+	ProductHandler(const ProductHandler& other);
+	ProductHandler operator=(const ProductHandler& other);
 
 	void importProduct(Product* product);
 	void findAndShowProduct(int id) const;
 	void removeProduct(int id);
 	void editProductId(int id);
-	void editProductButNotID(int id);
+	void editProduct(int id);
 
 	void sellProduct(int idProduct, int quantitySale, int idEmployee);
 	float totalCostOfProducts() const;
 	float totalRevenue() const;
 
 	void showProduct () const;
+
+	static bool askYesNo(const string& question);
+
 
 	//void updateSourceFile(string fileName);
 

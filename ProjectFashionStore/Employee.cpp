@@ -3,6 +3,9 @@
 //
 
 #include "Employee.h"
+#include <iostream>
+
+using namespace std;
 
 Employee::Employee(int id, string name, float salary, float salesCommission):id(id), name(name), salary(salary), salesCommission(0) {
 }
@@ -22,6 +25,10 @@ float Employee::getSalary() const {
 	return this->salary;
 }
 
+float Employee::getsalesCommission() const {
+	return this->salesCommission;
+}
+
 void Employee::setID(int id) {
 	this->id = id;
 }
@@ -34,12 +41,23 @@ void Employee::setSalary(float salary) {
 	this->salary = salary;
 }
 
-void Employee::totalSalesCommission(float commission) {
-	this->salesCommission += commission;
+void Employee::setSalesCommission(float salesCommission) {
+		this->salesCommission += salesCommission;;
 }
 
+void Employee::editInfoButNotID() {
+	cin.ignore();
+	cout << "\nName: ";
+	getline(cin, name);
+	cout << "\nSalary: ";
+	cin >> salary;
+	cin.ignore();
+	cout << "\nsales commission: ";
+	cin >> salesCommission;
+	cin.ignore();
+}
 
-string Employee::description() const {
+string Employee::showInfo() const {
 	return "ID: " + to_string(id) + ", name: " + name + ", base salary: " + to_string(salary)
 	+ ", sales commission: " + to_string(salesCommission) + ", total income: "
 	+ to_string(salary + salesCommission) ;

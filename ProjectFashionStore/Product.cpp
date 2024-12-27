@@ -9,9 +9,9 @@
 using namespace std;
 
 Product::Product(int id, const string& name, float purchasePrice, float sellingPrice, const string& brand,
-	int quantity, int quantitySold, int quantityPurchased): id(id), name(name), purchasePrice(purchasePrice),
-sellingPrice(sellingPrice), brand(brand), quantity(quantity), quantitySold(quantitySold),
-quantityPurchased(quantityPurchased){
+	int quantityBeginningInventory, int quantitySold, int quantityImported): id(id), name(name), purchasePrice(purchasePrice),
+sellingPrice(sellingPrice), brand(brand), quantityBeginningInventory(quantityBeginningInventory), quantitySold(quantitySold),
+quantityImported(quantityImported){
 }
 
 Product::~Product() {
@@ -37,16 +37,16 @@ string Product::getBrand() const {
 	return this->brand;
 }
 
-int Product::getQuantity() const {
-	return this->quantity;
+int Product::getQuantityBeginningInventory() const {
+	return this->quantityBeginningInventory;
 }
 
 int Product::getQuantitySold() const {
 	return this->quantitySold;
 }
 
-int Product::getQuantityPurchased() const {
-	return this->quantityPurchased;
+int Product::getQuantityImported() const {
+	return this->quantityImported;
 }
 
 void Product::setID(int id) {
@@ -70,16 +70,16 @@ void Product::setBrand(const string &brand) {
 	this->brand = brand;
 }
 
-void Product::setQuantity(int quantity) {
-	this->quantity = quantity;
+void Product::setQuantityBeginningInventory(int quantityBeginningInventory) {
+	this->quantityBeginningInventory = quantityBeginningInventory;
 }
 
 void Product::setQuantitySold(int quantitySold) {
 	this->quantitySold = quantitySold;
 }
 
-void Product::setQuantityPurchased(int quantityPurchased) {
-	this->quantityPurchased = quantityPurchased;
+void Product::setQuantityImported(int quantityImported) {
+	this->quantityImported = quantityImported;
 }
 
 void Product::editInfoButNotID(){
@@ -94,14 +94,14 @@ void Product::editInfoButNotID(){
 	cin.ignore();
 	cout << "\nBrand: ";
 	getline(cin, brand);
-	cout << "\nQuantity in stock: ";
-	cin >> quantity;
+	cout << "\nBeginning inventory: ";
+	cin >> quantityBeginningInventory;
 	cin.ignore();
 	cout << "\nQuantity sold: ";
 	cin >> quantitySold;
 	cin.ignore();
-	cout << "\nQuantity purchased: ";
-	cin >> quantityPurchased;
+	cout << "\nQuantity imported: ";
+	cin >> quantityImported;
 	cin.ignore();
 }
 
@@ -111,12 +111,12 @@ bool Product::operator==(const Product &other) const {
 			purchasePrice == other.purchasePrice &&
 				sellingPrice == other.sellingPrice &&
 					brand == other.brand &&
-						quantity == other.quantity &&
+						quantityBeginningInventory == other.quantityBeginningInventory &&
 							quantitySold == other.quantitySold;
 }
 
 float Product::totalCostOfGoods() const {
-	return purchasePrice*(quantity + quantityPurchased);
+	return purchasePrice*(quantityBeginningInventory + quantityImported);
 }
 
 float Product::totalRevenue() const {
@@ -124,16 +124,17 @@ float Product::totalRevenue() const {
 }
 
 int Product::endOfDayInventory() const {
-	int quantityEndOfDay = quantity + quantityPurchased - quantitySold;
+	int quantityEndOfDay = quantityBeginningInventory + quantityImported - quantitySold;
 	return quantityEndOfDay;
 }
 
 string Product::showInfo() const {
 	return name + ", id: " + to_string(id) + ", brand: "
 	+ brand + ", purchase price: " + to_string(purchasePrice) + ", selling price: " +
-		to_string(sellingPrice) +", \n\tbeginning inventory: " + to_string(quantity)
-	+ ", numbers of goods imported: " + to_string(quantityPurchased)
-	+ ", number of goods sold: " + to_string(quantitySold);
+		to_string(sellingPrice) +", \n\tbeginning inventory: " + to_string(quantityBeginningInventory)
+	+ ", numbers of goods imported: " + to_string(quantityImported)
+	+ ", number of goods sold: " + to_string(quantitySold) + ", number of goods in stock: "
+	+ to_string(endOfDayInventory());
 }
 
 Product * Product::clone() const {

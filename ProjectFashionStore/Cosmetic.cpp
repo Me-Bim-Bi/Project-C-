@@ -9,8 +9,8 @@
 using namespace std;
 
 Cosmetic::Cosmetic(int id, const string& name, float purchasePrice, float sellingPrice, const string& brand,
-		int quantity, int quantitySold, int quantityPurchased, const string& type):Product(id, name, purchasePrice,sellingPrice,
-			brand, quantity, quantitySold, quantityPurchased), type(type){
+		int quantityBeginningInventory, int quantitySold, int quantityImported, const string& type):Product(id, name, purchasePrice,sellingPrice,
+			brand, quantityBeginningInventory, quantitySold, quantityImported), type(type){
 }
 
 string Cosmetic::getType() const {

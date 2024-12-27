@@ -16,13 +16,20 @@ private:
 	int capacity;
 	void expand();
 	void freeMemory();
-	int findID(int id) const;
+	int findIdIndex(int id) const;
 public:
 	EmployeeHandler(int capacity = 5);
 	~EmployeeHandler();
+	EmployeeHandler(const EmployeeHandler& other);
+	void operator=(const EmployeeHandler& other);
 
 	void addEmployee(int id = 0, string name = "?", float salary = 0.0f, float salesCommission = 0.0f);
-	void findEmployee(int id) const;
+	void editIdEmployee(int id);
+	void editEmployee(int id);
+	void removeEmployee(int id);
+	void findEmployeeAndShowInfo(int id) const;
+	void addCommission(int id, float salesCommission);
+
 	void showInfo() const;
 
 };

@@ -4,30 +4,21 @@
 
 #include "ProductHandler.h"
 #include "Clothing.h"
+#include "Employee.h"
+
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include "Employee.h"
+#include <algorithm> // to use "transform" to change string input in function "askYesNO" to capital letters
+
+#include "EmployeeHandler.h"
+
+#include <cctype> // to "toupper" to change string input in function "askYesNO" to capital letters
 
 using namespace std;
 
-//only 1 id product number exist in system
-
-
-bool ProductHandler::askYesNo(const string &question) {
-    string input;
-    while (true) {
-        cout << question << " (yes/no): ";
-        cin >> input;
-        if (input == "yes" || input == "YES" || input == "Yes") {
-            return true;
-        } else if (input == "no" || input == "NO" || input == "No") {
-            return false;
-        } else {
-            cout << "Invalid input! Please enter 'yes' or 'no'." << endl;
-        }
-    }
-}
+//rule: only 1 id product number can exist in system => always need to check
+//if the id already exists.
 
 int ProductHandler::findIndexProduct(int id) const {
 	int index = -1;
@@ -39,13 +30,34 @@ int ProductHandler::findIndexProduct(int id) const {
 	return index;
 }
 
-ProductHandler::ProductHandler() {
+ProductHandler::ProductHandler(){
 }
 
+//free up memory
 ProductHandler::~ProductHandler() {
 	for (auto product : products) {
 		delete product;
 	}
+	cout << "destruct ProductHandler" << endl;
+}
+
+ProductHandler::ProductHandler(const ProductHandler &other) {
+	for (auto product : other.products) {
+		products.push_back(product->clone());
+	}
+}
+
+ProductHandler ProductHandler::operator=(const ProductHandler &other) {
+	if(this != & other) {
+		for (auto product : products) {
+			delete product;
+		}
+		products.clear();
+		for (const auto& product : other.products) {
+			products.push_back(product->clone());
+		}
+	}
+	return *this;
 }
 
 void ProductHandler::importProduct(Product* product) {
@@ -54,8 +66,8 @@ void ProductHandler::importProduct(Product* product) {
 	//check if the product exists in system => only add the quantityPurchase
 	if(index != -1) {
 		if(*this->products[index] == *product) {
-			int quantityAfterImport = products[index]->getQuantityPurchased() + product->getQuantityPurchased();
-			products[index]->setQuantityPurchased(quantityAfterImport);
+			int quantityAfterImport = products[index]->getQuantityImported() + product->getQuantityImported();
+			products[index]->setQuantityImported(quantityAfterImport);
 		}
 		else
 		{
@@ -66,8 +78,8 @@ void ProductHandler::importProduct(Product* product) {
 		}
 	}
 	else {
-		//check if the product does not exist in system => add the new product
-		products.push_back(product);
+		//check if the product does not exist in system => add the new product via clone
+		products.push_back(product->clone());
 	}
 }
 
@@ -122,7 +134,7 @@ void ProductHandler::editProductId(int id) {
 	}
 }
 
-void ProductHandler::editProductButNotID(const int id) {
+void ProductHandler::editProduct(const int id) {
 	int index = findIndexProduct(id);
 	if (index != -1) {
 		cout << "The product with the id number " << id << " have got following information: " << endl
@@ -149,10 +161,11 @@ void ProductHandler::editProductButNotID(const int id) {
 void ProductHandler::sellProduct(int idProduct, int quantitySale, int idEmployee) {
 	int index = findIndexProduct(idProduct);
 	if(index != -1) {
-		int quantityAfterSale = products[index]->getQuantity()+products[index]->getQuantityPurchased()
-	- products[index]->getQuantitySold()-quantitySale;
-		if(quantityAfterSale >= 0) {
-			products[index]->setQuantitySold(quantityAfterSale);
+		int quantityInStock = products[index]->getQuantityBeginningInventory()+products[index]->getQuantityImported();
+		int totalQuantitySold = products[index]->getQuantitySold()+quantitySale;
+		if(totalQuantitySold <= quantityInStock) {
+			products[index]->setQuantitySold(totalQuantitySold);
+			//float employeeCommission = (products[index]->getSellingPrice() * quantitySale) * 0.02;
 		}
 		else {
 			cout << "The product with id " << idProduct << " is out of stock." << endl;
@@ -186,8 +199,25 @@ void ProductHandler::showProduct() const {
 		cout << index << ". " << product->showInfo() << endl;
 		index++;
 	}
-	cout << "Total price of all products is: " << totalCostOfProducts() << endl;
-	cout << "Total revenue is: " << totalRevenue() << endl;
+	cout << "Total price of all products is: " << totalCostOfProducts() << endl
+	<< "Total revenue is: " << totalRevenue() << endl;
+}
+
+
+bool ProductHandler::askYesNo(const string &question) {
+	string input;
+	while (true) {
+		cout << question << " (yes/no): ";
+		cin >> input;
+		transform(input.begin(), input.end(), input.begin(), ::toupper);
+		if (input == "YES") {
+			return true;
+		} else if (input == "NO") {
+			return false;
+		} else {
+			cout << "Invalid input! Please enter 'yes' or 'no'." << endl;
+		}
+	}
 }
 
 

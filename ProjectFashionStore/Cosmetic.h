@@ -12,7 +12,7 @@ private:
 	string type;
 public:
 	Cosmetic(int id, const string& name, float purchasePrice, float sellingPrice, const string& brand,
-		int quantity, int quantitySold, int quantityPurchased, const string& type = "?");
+		int quantityBeginningInventory, int quantitySold, int quantityImported, const string& type = "?");
 
 	string getType() const;
 	void setType(const string& type);

@@ -12,6 +12,18 @@
 #include "ProductHandler.h"
 #include "Menu.h"
 
+/*
+* Here is some basic rules:
+* 1 product has only 1 id. The user can only add a product if all information match,
+* only quantity purchase is different, or the product’s id has not existed att all.
+* 1 employee has only 1 id. The user can only add an employee if the employee’s id
+* has not existed att all in the system.
+* The user can find, edit or remove a product or en employee with the id number.
+* The user can only edit id number if the new id number does not exist in the system.
+* Every time when the user want to edit a product’s information or remove a product,
+* the product’s information will be shown first. The user can choose if they want to change/remove it.
+*/
+
 using namespace std;
 
 int main() {
@@ -49,18 +61,24 @@ int main() {
 			}
 		}
 	}*/
-	EmployeeHandler abd;
-	abd.addEmployee(1201,"chu ha thanh", 14750);
-	abd.addEmployee(926,"tran quang huy", 32000);
-	abd.addEmployee(1006,"tran dieu uyen", 20000);
-	abd.addEmployee(1030,"tran phuong linh", 21302);
+	EmployeeHandler emHandler;
+	emHandler.addEmployee(1201,"chu ha thanh", 14750);
+	emHandler.addEmployee(926,"tran quang huy", 32000);
+	emHandler.addEmployee(1006,"tran dieu uyen", 20000);
+	emHandler.addEmployee(1030,"tran phuong linh", 21302);
+	emHandler.showInfo();
+	cout << endl;
+	cout << endl;
+	ProductHandler abd;
+	abd.importProduct(new Clothing(123,"Klänning",120,150,"Lindex",10,2,3,"M","Rosa"));
+	abd.importProduct(new Clothing(345,"Tröja",120,180,"Lindex",13,2,3,"M","Rosa"));
+	abd.importProduct(new Cosmetic(3457,"Ring",120,180,"Lindex",13,0,3,"ring"));
+	abd.showProduct();
+	cout << endl;
+	cout << endl;
+	abd.sellProduct(345,4,3234);
+	abd.showProduct();
 
-	abd.showInfo();
-	cout << endl;
-	cout << endl;
-	abd.findEmployee(1006);
-	cout << endl;
-	cout << endl;
 
 	//man skulle fråga om användaren vill tillägga Clothing eller Cosmetic. Sedan skapar man det i Managment.
 	//Managment behöver vara en source file eller en klass?

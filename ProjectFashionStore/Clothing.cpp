@@ -9,8 +9,8 @@
 using namespace std;
 
 Clothing::Clothing(int id, const string& name, float purchasePrice, float sellingPrice, const string& brand,
-		int quantity, int quantitySold, int quantityPurchased, const string& size, const string& colour) : Product(id,name,purchasePrice,sellingPrice,
-			brand,quantity,quantitySold,quantityPurchased), size(size), colour(colour){
+		int quantityBeginningInventory, int quantitySold, int quantityImported, const string& size, const string& colour) : Product(id,name,purchasePrice,sellingPrice,
+			brand,quantityBeginningInventory,quantitySold,quantityImported), size(size), colour(colour){
 }
 
 string Clothing::getSize() const {

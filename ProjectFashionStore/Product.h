@@ -16,12 +16,12 @@ private:
 	float purchasePrice;
 	float sellingPrice;
 	string brand;
-	int quantity;
+	int quantityBeginningInventory;
 	int quantitySold;
-	int quantityPurchased;
+	int quantityImported;
 public:
 	Product(int id = -1, const string& name = "?", float purchasePrice = 0.0f, float sellingPrice = 0.0f,
-		const string& brand = "?", int quantity = 0, int quantitySold = 0, int quantityPurchased = 0);
+		const string& brand = "?", int quantityBeginningInventory = 0, int quantitySold = 0, int quantityImported = 0);
 	virtual ~Product();
 
 	int getID() const;
@@ -29,18 +29,18 @@ public:
 	float getPurchasePrice() const;
 	float getSellingPrice() const;
 	string getBrand() const;
-	int getQuantity() const;
+	int getQuantityBeginningInventory() const;
 	int getQuantitySold() const;
-	int getQuantityPurchased() const;
+	int getQuantityImported() const;
 
 	void setID(int id);
 	void setName(const string& name);
 	void setPurchasePrice(float price);
 	void setSellingPrice(float sellingPrice);
 	void setBrand(const string& brand);
-	void setQuantity(int quantity);
+	void setQuantityBeginningInventory(int quantityBeginningInventory);
 	void setQuantitySold(int quantitySold);
-	void setQuantityPurchased(int quantityPurchased);
+	void setQuantityImported(int quantityImported);
 
 	virtual void editInfoButNotID() = 0;
 	virtual bool operator ==(const Product& other) const = 0;

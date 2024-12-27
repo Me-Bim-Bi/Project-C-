@@ -22,15 +22,17 @@ public:
   int getId() const;
   string getName() const;
   float getSalary() const;
+  float getsalesCommission() const;
 
   void setID(int id);
   void setName(const string& name);
   void setSalary(float salary);
+  void setSalesCommission( float salesCommission);
 
-  void totalSalesCommission(float commission);
   void totalIncome();
 
-  string description() const;
+  void editInfoButNotID();
+  string showInfo() const;
 };
 
 
