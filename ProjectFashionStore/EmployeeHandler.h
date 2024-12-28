@@ -34,6 +34,10 @@ public:
 
 	void showInfo() const;
 
+	void loadProductsFromFie(const string& fileName);
+	void saveProductToFile(const string& fileName);
+
+
 };
 
 

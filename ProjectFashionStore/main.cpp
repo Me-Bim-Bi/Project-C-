@@ -61,14 +61,16 @@ int main() {
 			}
 		}
 	}*/
-
 	ProductHandler abd;
-	abd.importProduct(new Clothing(123,"Klänning",120,150,"Lindex",10,2,3,"M","Rosa"));
-	abd.importProduct(new Clothing(345,"Tröja",120,180,"Lindex",13,2,3,"M","Rosa"));
-	abd.importProduct(new Cosmetic(3457,"Ring",120,180,"Lindex",13,0,3,"ring"));
+	abd.loadProductsFromFie("All products");
 	abd.showProduct();
-	abd.saveProductToFile("Products");
-	abd.loadProductsFromFie("Products");
+	cout << endl << endl << endl;
+	abd.importProduct(new Clothing(123,"Klänning",120,150,"Lindex",16,0,5,"M","Rosa"));
+	abd.importProduct(new Clothing(345,"Tröja",120,180,"Lindex",16,0,2,"M","Rosa"));
+	abd.importProduct(new Cosmetic(3457,"Ring",120,180,"Lindex",17,0,1,"ring"));
+	abd.showProduct();
+	cout << endl << endl << endl;
+	abd.saveProductToFile("All products");
 
 
 	//man skulle fråga om användaren vill tillägga Clothing eller Cosmetic. Sedan skapar man det i Managment.

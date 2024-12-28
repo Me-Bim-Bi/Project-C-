@@ -175,3 +175,11 @@ void EmployeeHandler::showInfo() const {
 		cout << employees[i]->showInfo() << endl;
 	}
 }
+
+void EmployeeHandler::loadProductsFromFie(const string &fileName) {
+
+}
+
+void EmployeeHandler::saveProductToFile(const string &fileName) {
+
+}

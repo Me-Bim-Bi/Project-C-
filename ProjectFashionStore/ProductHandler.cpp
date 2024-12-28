@@ -77,7 +77,6 @@ void ProductHandler::importProduct(Product* product) {
 		}
 	}
 	else {
-		//check if the product does not exist in system => add the new product via clone
 		products.push_back(product->clone());
 	}
 }
@@ -250,10 +249,6 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 			input.ignore();
 			input >> quantityImported;
 			input.ignore();
-			quantityInStock = quantityBeginningInventory + quantityImported - quantitySold;
-			quantityBeginningInventory = quantityInStock;
-			quantitySold = 0;
-			quantityImported = 0;
 
 			Product* product = nullptr;
 
@@ -304,7 +299,7 @@ void ProductHandler::saveProductToFile(const string& fileName) {
 				typeProduct = "Clothing";
 				auto* clothing = dynamic_cast<Clothing*>(product);
 				string size = clothing->getSize();
-				string colour = clothing->getSize();
+				string colour = clothing->getColour();
 				out << typeProduct << ',' << id << ',' << name << ',' << purchasePrice << ','
 				<< sellingPrice << ',' << brand << ',' << quantityBeginningInventory << ','
 				<< quantitySold << ',' << quantityImported << ',' << size << ',' << colour << '\n';
