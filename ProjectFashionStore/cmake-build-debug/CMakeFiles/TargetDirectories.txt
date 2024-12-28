@@ -1,3 +1,0 @@
-/Users/chuhathanh/Workspaces/Project-C-/ProjectFashionStore/cmake-build-debug/CMakeFiles/ProjectFashionStore.dir
-/Users/chuhathanh/Workspaces/Project-C-/ProjectFashionStore/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/chuhathanh/Workspaces/Project-C-/ProjectFashionStore/cmake-build-debug/CMakeFiles/rebuild_cache.dir

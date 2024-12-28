@@ -1,0 +1,15 @@
+# ninja log v6
+7	1785	1735420583155685936	CMakeFiles/Project.dir/Management.cpp.o	50c57dfcf23b4cfb
+2	2018	1735420583150541545	CMakeFiles/Project.dir/main.cpp.o	9a16a7db87c945b3
+6	2036	1735420583154545854	CMakeFiles/Project.dir/Cosmetic.cpp.o	2d5b5f376e00b80b
+6	2038	1735420583154908450	CMakeFiles/Project.dir/Employee.cpp.o	adb162d7fee305cd
+5	2039	1735420583154134543	CMakeFiles/Project.dir/Clothing.cpp.o	868f454311f19af5
+6	2274	1735420583155224656	CMakeFiles/Project.dir/EmployeeHandler.cpp.o	c942e9d26d2d7ef0
+1789	2693	1735420584937503594	CMakeFiles/Project.dir/Menu.cpp.o	b3409ead4d059192
+2019	2929	1735420585167351801	CMakeFiles/Project.dir/Product.cpp.o	24a986fba7ba4346
+2037	3171	1735420585185373139	CMakeFiles/Project.dir/ProductHandler.cpp.o	3c80e4aa7c42999e
+3172	3322	1735420586320333831	Project	3de6c68c26857770
+7	930	1735420640408849190	CMakeFiles/Project.dir/main.cpp.o	9a16a7db87c945b3
+930	1006	1735420641332545594	Project	3de6c68c26857770
+6	999	1735420699246521305	CMakeFiles/Project.dir/main.cpp.o	9a16a7db87c945b3
+999	1081	1735420700239749482	Project	3de6c68c26857770
