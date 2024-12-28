@@ -13,6 +13,9 @@ Clothing::Clothing(int id, const string& name, float purchasePrice, float sellin
 		sellingPrice,quantityBeginningInventory,quantitySold,quantityImported), size(size), colour(colour){
 }
 
+Clothing::~Clothing() {
+}
+
 string Clothing::getSize() const {
 	return this->size;
 }

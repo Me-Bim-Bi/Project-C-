@@ -14,7 +14,7 @@ private:
 	int findIndexProduct(int id) const;
 public:
 	ProductHandler();
-	~ProductHandler();
+	virtual~ProductHandler();
 	ProductHandler(const ProductHandler& other);
 	ProductHandler operator=(const ProductHandler& other);
 

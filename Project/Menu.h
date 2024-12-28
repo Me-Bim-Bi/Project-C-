@@ -5,11 +5,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-
-
-class Menu {
-public:
-	Menu();
-};
+void Menu();
+int checkInputDataInt();
 
 #endif //MENU_H

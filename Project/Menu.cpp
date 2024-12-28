@@ -7,8 +7,9 @@
 
 using namespace std;
 
-Menu::Menu() {
-	cout << "*************************************************************************" << endl
+void Menu() {
+	cout << endl
+	<< "*************************************************************************" << endl
 	<< "<<<<<<<<<<<<<<<<<<<<< Welcome To The Fashion Store! >>>>>>>>>>>>>>>>>>>>>" << endl
 	<< "*************************************************************************" << endl
 	<< "|									MENU								|" << endl
@@ -27,3 +28,21 @@ Menu::Menu() {
 	<< "|				***	Please select from the menu above: ***		  		| " << endl
 	<< "------------------------------------------------------------------------" << endl;
 }
+
+int checkInputDataInt() {
+	int input = -1;
+	while (true) {
+		cin >> input;
+		if (cin.fail() || input < 0) { //check if the input data less than 0 or not a number
+			cin.clear(); //delete the wrong status
+			cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
+			cout << "Invalid input. You need to insert a positive number. Please try again.\n";
+		} else {
+			break;
+		}
+	}
+	cin.ignore();
+	return input;
+}
+
+

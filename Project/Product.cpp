@@ -86,7 +86,6 @@ void Product::editId() {
 		}
 	}
 	cin.ignore();
-
 }
 
 void Product::editName() {
@@ -172,7 +171,6 @@ void Product::editQuantityImported() {
 
 
 void Product::editInfoButNotID(){
-	cin.ignore();
 	editName();
 	editPurchasePrice();
 	editSellingPrice();

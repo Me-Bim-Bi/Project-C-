@@ -1,6 +1,7 @@
 //
 // Created by Chu Ha Thanh on 2024-12-15.
 //
+#include <cmath>
 #include <iostream>
 #include <string>
 
@@ -32,6 +33,7 @@ int main() {
 	EmployeeHandler employerHanderpointers;
 	ProductHandler productHanderVector;
 	productHanderVector.loadProductsFromFie("All products");
+	productHanderVector.showProduct();
 
 	bool isWorking = true;
 	int answer;
@@ -56,32 +58,41 @@ int main() {
 				isWorking = false;
 			}
 			else if (answer == 1){
-
+				auto* clothing = new Clothing;
+				clothing->editId();
+				clothing->editInfoButNotID();
+				productHanderVector.importProduct(clothing);
+				delete clothing;
+				productHanderVector.showProduct();
+			}
+			else if (answer == 2) {
+				auto* cosmetic = new Cosmetic;
+				cosmetic->editId();
+				cosmetic->editInfoButNotID();
+				productHanderVector.importProduct(cosmetic);
+				productHanderVector.showProduct();
+			}
+			else if (answer == 3) {
+				cout << "Insert the product id you want to find: ";
+				int checkId = checkInputDataInt();
+				productHanderVector.findAndShowProduct(checkId);
 			}
 			else if (answer == 4) {
-
-				//isContinue = askYesNo("Do you want to do something else? ");
-
+				cout << "Insert the product id you want to remove: ";
+				int checkId = checkInputDataInt();
+				productHanderVector.removeProduct(checkId);
+				productHanderVector.showProduct();
+			}
+			else if (answer == 5) {
+				
 			}
 		}
 	}
-	/*
-	ProductHandler abd;
-	abd.loadProductsFromFie("All products");
-	abd.showProduct();
-	abd.importProduct(new Clothing(123,"Klänning", 125, 150, 100, 30, 150, "M", "Svart"));
-	abd.importProduct(new Clothing(456,"Tröja", 57, 80, 50, 10, 20, "SX", "Blommor"));
+	return 0;
+}
 
-	abd.editProduct(456);
-	abd.showProduct();
-	abd.saveProductsToFile("All products");
-
-*/
 	//man skulle fråga om användaren vill tillägga Clothing eller Cosmetic. Sedan skapar man det i Managment.
 	//Managment behöver vara en source file eller en klass?
 	//det kommer att läsa filen först när program statar och tillägga alla product till objekt ProductHandler.
 	//problem är att hur kan man veta om att det är Clothing eller Cosmetic => den första raden är hur många i filen
 	//det är hur många element i vector products. sedan skriver man efter syntax: Clothing - eller Cosmetic.
-
-  return 0;
-}

@@ -36,7 +36,6 @@ ProductHandler::~ProductHandler() {
 	for (auto product : products) {
 		delete product;
 	}
-	cout << "destruct ProductHandler" << endl;
 }
 
 ProductHandler::ProductHandler(const ProductHandler &other) {
@@ -243,7 +242,7 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 		while (getline(in, line)) {
 			++lineNumber;
 			istringstream input(line);
-			string typeProduct = "", name = "", brand = "", size = "", typeCosmetic = "", colour = "";
+			string typeProduct, name;
 			int id = 0, quantityBeginningInventory = 0, quantitySold = 0, quantityImported = 0;
 			float purchasePrice = 0.0f, sellingPrice = 0.0f;
 
@@ -256,7 +255,6 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 				input.ignore();
 				input >> sellingPrice;
 				input.ignore();
-				getline(input, brand, ',');
 				input >> quantityBeginningInventory;
 				input.ignore();
 				input >> quantitySold;
@@ -266,12 +264,15 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 			}
 			Product* product = nullptr;
 			if(typeProduct == "Clothing") {
+				string size;
+				string colour;
 				getline(input, size, ',');
 				getline(input, colour, ',');
 				product = new Clothing (id, name, purchasePrice, sellingPrice, quantityBeginningInventory, quantitySold,
 					quantityImported, size, colour);
 			}
 			else if (typeProduct == "Cosmetic") {
+				string typeCosmetic;
 				getline(input, typeCosmetic, '\n');
 				product = new Cosmetic (id, name, purchasePrice, sellingPrice, quantityBeginningInventory, quantitySold,
 					quantityImported, typeCosmetic);
