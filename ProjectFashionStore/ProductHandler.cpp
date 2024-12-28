@@ -4,15 +4,14 @@
 
 #include "ProductHandler.h"
 #include "Clothing.h"
-#include "Employee.h"
+#include "Cosmetic.h"
+#include "EmployeeHandler.h"
 
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <algorithm> // to use "transform" to change string input in function "askYesNO" to capital letters
-
-#include "EmployeeHandler.h"
-
 #include <cctype> // to "toupper" to change string input in function "askYesNO" to capital letters
 
 using namespace std;
@@ -226,6 +225,72 @@ bool ProductHandler::askYesNo(const string &question) {
 	}
 }
 
+void ProductHandler::loadProductsFromFie(const string &fileName) {
+	ifstream in(fileName);
+	if(in.is_open()) {
+		string line;
+		while (getline(in, line)) {
+			istringstream input(line);
+			string typeProduct, name, brand, size, typeCosmetic, colour;
+			int id, quantityBeginningInventory, quantitySold, quantityImported, quantityInStock;
+			float purchasePrice, sellingPrice;
+
+			getline(input, typeProduct, ',');
+			input >> id;
+			input.ignore();
+			getline(input, name, ',');
+			input >> purchasePrice;
+			input.ignore();
+			input >> sellingPrice;
+			input.ignore();
+			getline(input, brand, ',');
+			input >> quantityBeginningInventory;
+			input.ignore();
+			input >> quantitySold;
+			input.ignore();
+			input >> quantityImported;
+			input.ignore();
+			quantityInStock = quantityBeginningInventory + quantityImported - quantitySold;
+			quantityBeginningInventory = quantityInStock;
+			quantitySold = 0;
+			quantityImported = 0;
+
+			Product* product = nullptr;
+
+			if(typeProduct == "Clothing") {
+				getline(input, size, ',');
+				getline(input, colour, ',');
+				product = new Clothing (id, name, purchasePrice, sellingPrice, brand, quantityBeginningInventory, quantitySold,
+					quantityImported, size, colour);
+			}
+			else if (typeProduct == "Cosmetic") {
+				getline(input, typeCosmetic, '\n');
+				product = new Cosmetic (id, name, purchasePrice, sellingPrice, brand, quantityBeginningInventory, quantitySold,
+					quantityImported, typeCosmetic);
+			}
+			if(product) {
+				importProduct(product);
+				delete product;
+			}
+		}
+		in.close();
+	}
+	else {
+		cerr << "The file was not found or could not be opened." << endl
+		<< "The inventory was not updated." << endl;
+	}
+}
+
+void ProductHandler::saveProductToFile(const string& fileName) {
+	ofstream out(fileName);
+	if(out.is_open()) {
+		
+	}
+	else {
+		cerr << "The file was not found or could not be opened." << endl;
+	}
+}
+}
 
 
 /*

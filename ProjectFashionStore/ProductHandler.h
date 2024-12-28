@@ -32,17 +32,9 @@ public:
 
 	static bool askYesNo(const string& question);
 
+	void loadProductsFromFie(const string& fileName);
+	void saveProductToFile(const string& fileName);
 
-	//void updateSourceFile(string fileName);
-
-	/*
-		int findClothing(int id, const string& name, float price, const string& brand,
-			int quantity, const string& size, const string& colour);
-		void removeClothing(int index);
-		void editClothing(int index);
-		void showClothing() const;
-		float totalClothingsCost() const;
-		*/
 };
 
 #endif //PRODUCTHANDLER_CPP
