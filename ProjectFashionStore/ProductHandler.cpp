@@ -268,6 +268,9 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 				product = new Cosmetic (id, name, purchasePrice, sellingPrice, brand, quantityBeginningInventory, quantitySold,
 					quantityImported, typeCosmetic);
 			}
+			else {
+				cerr << "Unknown product type. Skipping." << endl;
+			}
 			if(product) {
 				importProduct(product);
 				delete product;
@@ -278,29 +281,51 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 	else {
 		cerr << "The file was not found or could not be opened." << endl
 		<< "The inventory was not updated." << endl;
+		return;
 	}
 }
 
 void ProductHandler::saveProductToFile(const string& fileName) {
 	ofstream out(fileName);
 	if(out.is_open()) {
-		
+		for(const auto& product : products) {
+
+			string typeProduct;
+			int id = product->getID();
+			string name = product->getName();
+			float purchasePrice = product->getPurchasePrice();
+			float sellingPrice = product->getSellingPrice();
+			string brand = product->getBrand();
+			int quantityBeginningInventory = product->getQuantityBeginningInventory();
+			int quantitySold = product->getQuantitySold();
+			int quantityImported = product->getQuantityImported();
+
+			if(dynamic_cast<Clothing*>(product)) {
+				typeProduct = "Clothing";
+				auto* clothing = dynamic_cast<Clothing*>(product);
+				string size = clothing->getSize();
+				string colour = clothing->getSize();
+				out << typeProduct << ',' << id << ',' << name << ',' << purchasePrice << ','
+				<< sellingPrice << ',' << brand << ',' << quantityBeginningInventory << ','
+				<< quantitySold << ',' << quantityImported << ',' << size << ',' << colour << '\n';
+			}
+			else if (dynamic_cast<Cosmetic*>(product)) {
+				typeProduct = "Cosmetic";
+				auto* cosmetic = dynamic_cast<Cosmetic*>(product);
+				string typeCosmetic = cosmetic->getType();
+				out << typeProduct << ',' << id << ',' << name << ',' << purchasePrice << ','
+				<< sellingPrice << ',' << brand << ',' << quantityBeginningInventory << ','
+				<< quantitySold << ',' << quantityImported << ',' << typeCosmetic << '\n';
+			}
+			else {
+				continue;
+			}
+		}
+		out.close();
+		cout << "Products saved to file: " << fileName << endl;
 	}
 	else {
 		cerr << "The file was not found or could not be opened." << endl;
+		return;
 	}
 }
-}
-
-
-/*
-void ProductHandler::updateSourceFile(string fileName) {
-	try{
-		ifstream in;
-		in.open(fileName);
-		if(in.is_open()) {
-
-		}
-	}
-}
-*/

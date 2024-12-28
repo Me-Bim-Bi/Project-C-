@@ -24,3 +24,9 @@
 964	1050	1735339864351939302	ProjectFashionStore	bcb48250eb2f9d91
 7	952	1735339881308537825	CMakeFiles/ProjectFashionStore.dir/main.cpp.o	1e4ead3ff064d832
 952	1035	1735339882253491665	ProjectFashionStore	bcb48250eb2f9d91
+10	1317	1735387643743426357	CMakeFiles/ProjectFashionStore.dir/Management.cpp.o	5d095c9560def558
+9	1458	1735387643742040507	CMakeFiles/ProjectFashionStore.dir/main.cpp.o	1e4ead3ff064d832
+10	1481	1735387643743828701	CMakeFiles/ProjectFashionStore.dir/EmployeeHandler.cpp.o	c6ac6eb772840113
+10	1487	1735387643743039333	CMakeFiles/ProjectFashionStore.dir/Product.cpp.o	47bfe9b8f4f23404
+9	1778	1735387643742650132	CMakeFiles/ProjectFashionStore.dir/ProductHandler.cpp.o	5eeff5b4e655ba06
+1778	1929	1735387645511875690	ProjectFashionStore	bcb48250eb2f9d91

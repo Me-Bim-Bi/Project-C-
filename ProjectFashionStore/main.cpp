@@ -61,34 +61,14 @@ int main() {
 			}
 		}
 	}*/
-	EmployeeHandler emHandler;
-	emHandler.addEmployee(1201,"chu ha thanh", 14750);
-	emHandler.addEmployee(926,"tran quang huy", 32000);
-	emHandler.addEmployee(1006,"tran dieu uyen", 20000);
-	emHandler.addEmployee(1030,"tran phuong linh", 21302);
-	emHandler.showInfo();
-	cout << endl;
-	cout << endl;
+
 	ProductHandler abd;
 	abd.importProduct(new Clothing(123,"Klänning",120,150,"Lindex",10,2,3,"M","Rosa"));
 	abd.importProduct(new Clothing(345,"Tröja",120,180,"Lindex",13,2,3,"M","Rosa"));
 	abd.importProduct(new Cosmetic(3457,"Ring",120,180,"Lindex",13,0,3,"ring"));
 	abd.showProduct();
-	cout << endl;
-	cout << endl;
-	abd.sellProduct(3457,5,1006,emHandler);
-	abd.sellProduct(123,1,1006,emHandler);
-	abd.sellProduct(345,5,1006,emHandler);
-	abd.showProduct();
-	emHandler.showInfo();
-	cout << endl;
-	cout << endl;
-	abd.sellProduct(3457,5,1030,emHandler);
-	abd.sellProduct(123,1,1030,emHandler);
-	abd.sellProduct(345,5,1030,emHandler);
-
-	abd.showProduct();
-	emHandler.showInfo();
+	abd.saveProductToFile("Products");
+	abd.loadProductsFromFie("Products");
 
 
 	//man skulle fråga om användaren vill tillägga Clothing eller Cosmetic. Sedan skapar man det i Managment.
