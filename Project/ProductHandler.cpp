@@ -133,7 +133,7 @@ void ProductHandler::editProductId(int id) const {
 							newID = static_cast<int>(temp);
 						}
 
-						if (newID < 0) {
+						if (newID <= 0) {
 							cout << "Invalid input. ID must be a positive number. Please try again.\n";
 						} else {
 							break;
@@ -175,6 +175,7 @@ void ProductHandler::editProduct(const int id) const {
 			editProductId(id);
 			if (askYesNo("Do you want change the another information of this product? ")) {
 				cout << "Please insert the new value: " << endl;
+				cin.ignore();
 				products[index]->editInfoButNotID();
 				cout << "The product information has been edited." << endl;
 			}
@@ -191,23 +192,47 @@ void ProductHandler::editProduct(const int id) const {
 	}
 }
 
-void ProductHandler::sellProduct(int idProduct, int quantitySale, int idEmployee, EmployeeHandler& emp) const {
-	int index = findIndexProduct(idProduct);
-	if(index != -1 && emp.callFindIdIndex(idEmployee) != -1) {
+void ProductHandler::sellProduct(EmployeeHandler& emp) const {
+	int checkProductID = -1, checkEmployeeID = -1, quantitySale = -1, index = -1;
+
+	while(true) {
+		cout << "\nProduct ID: ";
+		checkProductID = checkInputDataInt();
+		index = findIndexProduct(checkProductID);
+		if(index == -1) {
+			cerr << "The product id: " << checkProductID << " does not exist. Please try again!" << endl;
+			continue;
+		}
+		else {
+			break;
+		}
+	}
+	while(true) {
+		cout << "\nEmployee ID: ";
+		checkEmployeeID = checkInputDataInt();
+		if(emp.callFindIdIndex(checkEmployeeID) == -1) {
+			cerr << "The employee id: " << checkEmployeeID << " does not exist. Please try again!" << endl;
+			continue;
+		}
+		else {
+			break;
+		}
+	}
+	while(true) {
+		cout << "\nQuantity sold: ";
+		quantitySale = checkInputDataInt();
 		int quantity = products[index]->getQuantityBeginningInventory()+products[index]->getQuantityImported();
 		int totalQuantitySold = products[index]->getQuantitySold()+quantitySale;
 		if(totalQuantitySold <= quantity) {
 			products[index]->setQuantitySold(totalQuantitySold);
 			auto employeeCommission = products[index]->getSellingPrice() * static_cast<double>(quantitySale) * 0.02;
-			emp.addCommission(idEmployee,employeeCommission);
-			}
+			emp.addCommission(checkEmployeeID,employeeCommission);
+			break;
+		}
 		else {
-			cout << "The product " << idProduct<< " is out of stock." << endl;
-			}
-	}
-	else {
-		cout << "Sorry! We don't have any product with id " << idProduct << " in store"
-		<< " or the employee with id " << idEmployee << "does not exist." << endl;
+			cerr << "The product " << checkProductID << " is out of stock. Please try again!" << endl;
+			continue;
+		}
 	}
 }
 
@@ -302,9 +327,7 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 					cerr << "Error on line: " << lineNumber << ". Unknown product type. Skipping..." << endl;
 					continue;
 				}
-				if(product != nullptr) {
-					importProduct(product); //add product
-				}
+				importProduct(product.get()); //add product - raw pointer
 			}
 			catch (exception& ){
 				cerr << "Error in line: " << lineNumber << ". Invalid data. Skipping..." << endl;

@@ -18,7 +18,7 @@ private:
 	void freeMemory();
 	int findIdIndex(int id) const;
 public:
-	explicit EmployeeHandler(int capacity = 5);
+	EmployeeHandler(int capacity = 5);
 	~EmployeeHandler();
 	EmployeeHandler(const EmployeeHandler& other);
 	EmployeeHandler& operator=(const EmployeeHandler& other);

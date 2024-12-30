@@ -144,7 +144,7 @@ void EmployeeHandler::editIdEmployee (int id) const {
 					}
 				}
 				if(!isNumeric) {
-					cout << "Invalid input. ID must be a number. Please try again.\n" << endl;
+					cerr << "Invalid input. ID must be a number. Please try again.\n" << endl;
 				}
 				else {
 					try {
@@ -157,15 +157,15 @@ void EmployeeHandler::editIdEmployee (int id) const {
 							newID = static_cast<int>(temp);
 						}
 
-						if (newID < 0) {
-							cout << "Invalid input. ID must be a positive number. Please try again.\n";
+						if (newID <= 0) {
+							cerr << "Invalid input. ID must be a positive number. Please try again.\n";
 						} else {
 							break;
 						}
 					} catch (invalid_argument&) {
-						cout << "Invalid input. ID must be a valid number. Please try again.\n";
+						cerr << "Invalid input. ID must be a valid number. Please try again.\n";
 					} catch (out_of_range&) {
-						cout << "You must have entered the wrong information. "
+						cerr << "You must have entered the wrong information. "
 					"The number you entered is too large or too small for become an ID number. Please try again.\n";
 					}
 				}
@@ -174,7 +174,7 @@ void EmployeeHandler::editIdEmployee (int id) const {
 			}
 			cin.ignore();
 			if (findIdIndex(newID) != -1) {
-				cout << "Error! The new ID you entered already exists. The id changed failed." << endl;
+				cerr << "Error! The new ID you entered already exists. The id changed failed." << endl;
 			}
 			else {
 				employees[index]->setID(newID);
@@ -186,7 +186,7 @@ void EmployeeHandler::editIdEmployee (int id) const {
 		}
 	}
 	else {
-		cout << "The ID: " << id << " was not found!";
+		cerr << "The ID: " << id << " was not found!" << endl;
 	}
 }
 
@@ -209,7 +209,7 @@ void EmployeeHandler::editEmployee(int id) const {
 		}
 	}
 	else {
-		cout << "The ID: " << id << " was not found!";
+		cerr << "The ID: " << id << " was not found!";
 	}
 }
 
@@ -224,9 +224,12 @@ void EmployeeHandler::removeEmployee(int id) {
 			employees[nrOfCurrent] = nullptr;
 			cout << "The product has been deleted." << endl;
 		}
-		else{
-			cout << "Product with ID: " << id << " was not found!";
+		else {
+			cout << "The information of employee with id: " << id << " has not been removed" << endl;
 		}
+	}
+	else{
+		cerr << "Product with ID: " << id << " was not found!" << endl;
 	}
 }
 

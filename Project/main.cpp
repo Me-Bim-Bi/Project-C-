@@ -96,13 +96,7 @@ int main() {
 			}
 			else if (answer == 7) {
 				cout << "Insert following information to sale a product: ";
-				cout << "\nProduct ID: ";
-				int checkProductID = checkInputDataInt();
-				cout << "\nEmployee ID: ";
-				int checkEmployeeID = checkInputDataInt();
-				cout << "\nHow many products do you sell? ";
-				int quantitySold = checkInputDataInt();
-				productHanderVector.sellProduct(checkProductID,quantitySold,checkEmployeeID,employerHanderpointers);
+				productHanderVector.sellProduct(employerHanderpointers);
 				productHanderVector.showInfo();
 			}
 			else if (answer == 8) {

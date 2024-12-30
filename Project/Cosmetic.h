@@ -13,10 +13,9 @@ private:
 public:
 	Cosmetic(int id = -1, const string& name = "?", float purchasePrice = 0.0f, float sellingPrice = 0.0f, int quantityBeginningInventory = 0,
 		int quantitySold = 0, int quantityImported = 0, const string& type = "?");
-	~Cosmetic();
+	~Cosmetic() override;
 
 	string getType() const;
-	void setType(const string& type);
 
 	bool operator ==(const Product& other) const override;
 

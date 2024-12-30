@@ -31,19 +31,6 @@ Management::Management(const ProductHandler &pro, const EmployeeHandler &emp) {
 Management::~Management() {
 }
 
-
-double Management::getProfit() const {
-	return this->profit;
-}
-
-double Management::getRevenue() const {
-	return this->revenue;
-}
-
-double Management::getCost() const {
-	return this->cost;
-}
-
 void Management::showInfo() const {
 	cout << "Total cost: " << cost << endl
 	<< "Total revenue: " << revenue << endl

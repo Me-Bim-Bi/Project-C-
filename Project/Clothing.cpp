@@ -13,8 +13,7 @@ Clothing::Clothing(int id, const string& name, float purchasePrice, float sellin
 		sellingPrice,quantityBeginningInventory,quantitySold,quantityImported), size(size), colour(colour){
 }
 
-Clothing::~Clothing() {
-}
+Clothing::~Clothing() = default;
 
 string Clothing::getSize() const {
 	return this->size;
@@ -22,14 +21,6 @@ string Clothing::getSize() const {
 
 string Clothing::getColour() const {
 	return this->colour;
-}
-
-void Clothing::setSize(const string &size) {
-	this->size = size;
-}
-
-void Clothing::setColour(const string &colour) {
-	this->colour = colour;
 }
 
 void Clothing::editSize() {
@@ -59,8 +50,6 @@ string Clothing::showInfo() const {
 	return "Clothing: " + Product::showInfo() + ", size: " + size + ", colour " + colour;
 }
 
-//när vi skriver på filen får vi skriva med "CLothing" eller "Cosmetic" i början
-// sedan kommer de andra infomation. Vilken blir seperatade för de?
 Product * Clothing::clone() const {
 	return new Clothing(*this);
 }

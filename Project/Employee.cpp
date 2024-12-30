@@ -36,14 +36,6 @@ void Employee::setID(int id) {
 	this->id = id;
 }
 
-void Employee::setName(const string &name) {
-	this->name = name;
-}
-
-void Employee::setBaseSalary(double baseSalary) {
-	this->baseSalary = baseSalary;
-}
-
 void Employee::setSalesCommission(double salesCommission) {
 	this->salesCommission = salesCommission;;
 }

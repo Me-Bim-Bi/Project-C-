@@ -25,8 +25,6 @@ public:
 	double getSalesCommission() const;
 
 	void setID(int id);
-	void setName(const string& name);
-	void setBaseSalary(double baseSalary);
 	void setSalesCommission(double salesCommission);
 
 	double totalIncome() const;

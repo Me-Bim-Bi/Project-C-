@@ -19,9 +19,6 @@ public:
 	string getSize() const;
 	string getColour() const;
 
-	void setSize(const string& size);
-	void setColour(const string& colour);
-
 	void editSize();
 	void editColour();
 	void editInfoButNotID() override;

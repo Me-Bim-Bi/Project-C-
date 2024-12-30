@@ -21,10 +21,6 @@ string Cosmetic::getType() const {
 	return this->type;
 }
 
-void Cosmetic::setType(const string& type) {
-	this->type = type;
-}
-
 bool Cosmetic::operator==(const Product &other) const {
 	const Cosmetic* otherClothing = dynamic_cast<const Cosmetic*>(&other);
 	return otherClothing && Product::operator==(*otherClothing) &&

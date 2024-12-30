@@ -18,7 +18,7 @@ quantityImported(quantityImported){
 
 Product::~Product() {
 }
-/*
+
 int Product::getID() const {
 	return this->id;
 }
@@ -51,22 +51,6 @@ void Product::setID(int id) {
 	this->id = id;
 }
 
-void Product::setName(const string &name) {
-	this->name = name;
-}
-
-void Product::setPurchasePrice(float purchasePrice) {
-	this->purchasePrice = purchasePrice;
-}
-
-void Product::setSellingPrice(float sellingPrice) {
-	this->sellingPrice = sellingPrice;
-}
-
-void Product::setQuantityBeginningInventory(int quantityBeginningInventory) {
-	this->quantityBeginningInventory = quantityBeginningInventory;
-}
-
 void Product::setQuantitySold(int quantitySold) {
 	this->quantitySold = quantitySold;
 }
@@ -74,7 +58,7 @@ void Product::setQuantitySold(int quantitySold) {
 void Product::setQuantityImported(int quantityImported) {
 	this->quantityImported = quantityImported;
 }
-*/
+
 void Product::editId() {
 	while (true) {
 		string input;
@@ -100,7 +84,7 @@ void Product::editId() {
 					id = static_cast<int>(temp);
 				}
 
-				if (id < 0) {
+				if (id <= 0) {
 					cout << "Invalid input. ID must be a positive number. Please try again.\n";
 				} else {
 					break;
@@ -333,8 +317,20 @@ void Product::editInfoButNotID(){
 	editPurchasePrice();
 	editSellingPrice();
 	editQuantityBeginningInventory();
-	editQuantitySold();
 	editQuantityImported();
+	while(true) {
+		editQuantitySold();
+		int quantityInStock = endOfDayInventory();
+		if(quantityInStock >= 0) {
+			break;
+		}
+		else {
+			cout << "The quantity of goods sold is incorrect. "
+		   "There is not enough stock to sell that much. "
+			"Please try again!" << endl;
+			continue;
+		}
+	}
 }
 
 bool Product::operator==(const Product &other) const {

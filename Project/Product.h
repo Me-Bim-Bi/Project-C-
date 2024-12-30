@@ -32,10 +32,6 @@ public:
 	int getQuantityImported() const;
 
 	void setID(int id);
-	void setName(const string& name);
-	void setPurchasePrice(float purchasePrice);
-	void setSellingPrice(float sellingPrice);
-	void setQuantityBeginningInventory(int quantityBeginningInventory);
 	void setQuantitySold(int quantitySold);
 	void setQuantityImported(int quantityImported);
 
