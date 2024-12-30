@@ -12,4 +12,5 @@ add_executable(Project main.cpp
         Menu.cpp
         Product.cpp
         ProductHandler.cpp
+        Management.h
 )

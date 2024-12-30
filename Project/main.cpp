@@ -11,17 +11,18 @@
 #include "Employee.h"
 #include "EmployeeHandler.h"
 #include "ProductHandler.h"
+#include "Management.h"
 #include "Menu.h"
 
 /*
 * Here is some basic rules:
-* 1 product has only 1 id. The user can only add a product if all information match,
-* only quantity purchase is different, or the product’s id has not existed att all.
-* 1 employee has only 1 id. The user can only add an employee if the employee’s id
+* - 1 product has only 1 id. The user can only add a product if the product’s id has not existed att all
+* or all information match but only quantity purchase is different.
+* - 1 employee has only 1 id. The user can only add an employee if the employee’s id
 * has not existed att all in the system.
-* The user can find, edit or remove a product or en employee with the id number.
-* The user can only edit id number if the new id number does not exist in the system.
-* Every time when the user want to edit a product’s information or remove a product,
+* - The user can find, edit or remove a product or en employee information with the id number.
+* - The user can only edit id number if the new id number does not exist in the system.
+* - Every time when the user want to edit a product’s information or remove a product,
 * the product’s information will be shown first. The user can choose if they want to change/remove it.
 */
 
@@ -33,10 +34,10 @@ int main() {
 	ProductHandler productHanderVector;
 	employerHanderpointers.loadEmployeesFromFie("All Employees");
 	productHanderVector.loadProductsFromFie("All Products");
+
 	bool isWorking = true;
 	int answer;
 
-	//print the menu
 	while(isWorking) {
 		Menu();
 		//catch and show the error if the input data is not valid
@@ -52,7 +53,7 @@ int main() {
 			cin.ignore();
 		}
 		if(!cin.fail() && answer < 20 && answer > 0) {
-			if(answer == 20) {
+			if(answer == 19) {
 				isWorking = false;
 			}
 			else if (answer == 1){
@@ -114,16 +115,44 @@ int main() {
 				employerHanderpointers.addEmployee();
 				employerHanderpointers.showInfo();
 			}
+			else if (answer == 11) {
+				cout << "Insert the id of the employee that you want to find: ";
+				int checkId = checkInputDataInt();
+				employerHanderpointers.findEmployeeAndShowInfo(checkId);
+			}
+			else if (answer == 12) {
+				cout << "Insert the id of the employee that you want to remove information: ";
+				int checkId = checkInputDataInt();
+				employerHanderpointers.removeEmployee(checkId);
+				employerHanderpointers.showInfo();
+			}
+			else if (answer == 13) {
+				cout << "Insert the id of the employee that you want to to edit id information: ";
+				int checkId = checkInputDataInt();
+				employerHanderpointers.editIdEmployee(checkId);
+				employerHanderpointers.showInfo();
+			}
+			else if (answer == 14) {
+				cout << "Insert the id of the employee that you want to to edit information ";
+				int checkId = checkInputDataInt();
+				employerHanderpointers.editEmployee(checkId);
+				employerHanderpointers.showInfo();
+			}
 			else if (answer == 15) {
 				employerHanderpointers.showInfo();
+			}
+			else if (answer == 16) {
+				employerHanderpointers.saveEmployeesToFile("All employees");
+			}
+			else if (answer == 17) {
+				Management management(productHanderVector,employerHanderpointers);
+				management.showInfo();;
+			}
+			else if (answer == 18) {
+				Management management(productHanderVector,employerHanderpointers);
+				management.saveToFile("Statement");
 			}
 		}
 	}
 	return 0;
 }
-
-	//man skulle fråga om användaren vill tillägga Clothing eller Cosmetic. Sedan skapar man det i Managment.
-	//Managment behöver vara en source file eller en klass?
-	//det kommer att läsa filen först när program statar och tillägga alla product till objekt ProductHandler.
-	//problem är att hur kan man veta om att det är Clothing eller Cosmetic => den första raden är hur många i filen
-	//det är hur många element i vector products. sedan skriver man efter syntax: Clothing - eller Cosmetic.

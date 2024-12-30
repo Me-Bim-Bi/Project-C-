@@ -6,13 +6,12 @@
 #include "Clothing.h"
 #include "Cosmetic.h"
 #include "EmployeeHandler.h"
+#include "Menu.h"
 
 #include <vector>
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <algorithm> // to use "transform" to change string input in function "askYesNO" to capital letters
-#include <cctype> // to "toupper" to change string input in function "askYesNO" to capital letters
 
 using namespace std;
 
@@ -58,10 +57,9 @@ ProductHandler& ProductHandler::operator=(const ProductHandler &other) {
 }
 
 void ProductHandler::importProduct(Product* product) {
-	int idProduct = product->getID();
-	int index = findIndexProduct(idProduct);
+	const int idProduct = product->getID();
 	//check if the product exists in system => only add the quantityPurchase
-	if(index != -1) {
+	if(int index = findIndexProduct(idProduct); index != -1) {
 		if(*this->products[index] == *product) {
 			int quantityAfterImport = products[index]->getQuantityImported() + product->getQuantityImported();
 			products[index]->setQuantityImported(quantityAfterImport);
@@ -80,8 +78,7 @@ void ProductHandler::importProduct(Product* product) {
 }
 
 void ProductHandler::findAndShowProduct(const int id) const {
-	int index = findIndexProduct(id);
-	if (index != -1)
+	if (int index = findIndexProduct(id); index != -1)
 	{
 		cout << "The product with the id " << id << " have got the following information: " << endl
 		<< products[index]->showInfo() << endl;
@@ -92,8 +89,7 @@ void ProductHandler::findAndShowProduct(const int id) const {
 }
 
 void ProductHandler::removeProduct(const int id) {
-	int index = findIndexProduct(id);
-	if (index != -1) {
+	if (int index = findIndexProduct(id); index != -1) {
 		cout << "The product with the id " << id << " have got the following information: " << endl
 		<< products[index]->showInfo() << endl;
 		if (askYesNo("Do you want to remove this product? ")) {
@@ -110,8 +106,7 @@ void ProductHandler::removeProduct(const int id) {
 }
 
 void ProductHandler::editProductId(int id) const {
-	int index = findIndexProduct(id);
-	if (index != -1) {
+	if (int index = findIndexProduct(id); index != -1) {
 		if (askYesNo("Do you want to edit the id of this product? ")) {
 			int newID;
 			while (true) {
@@ -130,13 +125,10 @@ void ProductHandler::editProductId(int id) const {
 				}
 				else {
 					try {
-						long long temp = stoll (input);
-
 						// check if input is within the range of int
-						if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
+						if (long long temp = stoll (input); temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
 							throw out_of_range("Number out of range for int type.");
 						}
-
 						else {
 							newID = static_cast<int>(temp);
 						}
@@ -242,26 +234,10 @@ void ProductHandler::showInfo() const {
 		cout << index << ". " << product->showInfo() << endl;
 		index++;
 	}
-	cout << "Total price of all products is: " << totalCostOfProducts() << endl
-	<< "Total revenue is: " << totalRevenue() << endl;
 }
 
 
-bool ProductHandler::askYesNo(const string &question) {
-	string input;
-	while (true) {
-		cout << question << " (yes/no): ";
-		cin >> input;
-		transform(input.begin(), input.end(), input.begin(), ::toupper);
-		if (input == "YES") {
-			return true;
-		} else if (input == "NO") {
-			return false;
-		} else {
-			cout << "Invalid input! Please enter 'yes' or 'no'." << endl;
-		}
-	}
-}
+
 
 void ProductHandler::loadProductsFromFie(const string &fileName) {
 	ifstream in(fileName);
@@ -296,7 +272,8 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 				int quantitySold = stoi(productInformation[6]);
 				int quantityImported = stoi(productInformation[7]);
 
-				Product* product = nullptr;
+				unique_ptr<Product> product; //create a smart pointer to make everything easier
+
 				if(productType == "Clothing") {   //check if product type is Clothing to add product
 					if(productInformation.size() != 10) {
 						cerr << "Error on line: " << lineNumber << ". Invalid data. Must be 10 fields. Skipping..." << endl;
@@ -305,19 +282,19 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 					else {
 						const string& size = productInformation[8];
 						const string& colour = productInformation[9];
-						product = new Clothing(id, name, purchasePrice, sellingPrice, quantityBeginningInventory,
+						product = make_unique <Clothing> (id, name, purchasePrice, sellingPrice, quantityBeginningInventory,
 							quantitySold, quantityImported, size, colour);
 					}
 				}
 				else if(productType == "Cosmetic") {
 					//check if product type is Cosmetic to add product
-					if(productInformation.size() == 9) {
+					if(productInformation.size() != 9) {
 						cerr << "Error on line: " << lineNumber << ". Invalid data. Must be 9 fields. Skipping..." << endl;
 						continue;
 					}
 					else {
 						const string& typeCosmetic = productInformation[8];
-						product = new Cosmetic(id, name, purchasePrice, sellingPrice, quantityBeginningInventory,
+						product = make_unique <Cosmetic> (id, name, purchasePrice, sellingPrice, quantityBeginningInventory,
 						quantitySold, quantityImported, typeCosmetic);
 					}
 				}
@@ -329,18 +306,17 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 					importProduct(product); //add product
 				}
 			}
-			catch (exception& e){
+			catch (exception& ){
 				cerr << "Error in line: " << lineNumber << ". Invalid data. Skipping..." << endl;
 			}
 		}
 	}
 }
 
-void ProductHandler::saveProductsToFile(const string& fileName) {
+void ProductHandler::saveProductsToFile(const string& fileName) const {
 	ofstream out(fileName);
 	if(out.is_open()) {
 		for(const auto& product : products) {
-
 			string typeProduct;
 			int id = product->getID();
 			string name = product->getName();
@@ -350,18 +326,16 @@ void ProductHandler::saveProductsToFile(const string& fileName) {
 			int quantitySold = product->getQuantitySold();
 			int quantityImported = product->getQuantityImported();
 
-			if(dynamic_cast<Clothing*>(product)) {
+			if(auto* clothing = dynamic_cast<Clothing*>(product)) {
 				typeProduct = "Clothing";
-				auto* clothing = dynamic_cast<Clothing*>(product);
 				string size = clothing->getSize();
 				string colour = clothing->getColour();
 				out << typeProduct << ',' << id << ',' << name << ',' << purchasePrice << ','
 				<< sellingPrice << ',' << quantityBeginningInventory << ','
 				<< quantitySold << ',' << quantityImported << ',' << size << ',' << colour << '\n';
 			}
-			else if (dynamic_cast<Cosmetic*>(product)) {
+			else if (auto* cosmetic = dynamic_cast<Cosmetic*>(product)) {
 				typeProduct = "Cosmetic";
-				auto* cosmetic = dynamic_cast<Cosmetic*>(product);
 				string typeCosmetic = cosmetic->getType();
 				out << typeProduct << ',' << id << ',' << name << ',' << purchasePrice << ','
 				<< sellingPrice << ',' << quantityBeginningInventory << ','
@@ -371,11 +345,16 @@ void ProductHandler::saveProductsToFile(const string& fileName) {
 				continue;
 			}
 		}
+			//check if for some reason the file cannot be written
+		if(out.fail()) {
+			cerr << "Error! Something happened when we tried to save the file." << endl;
+		}
+		else {
+			cout << "Products saved to file: " << fileName << endl;
+		}
 		out.close();
-		cout << "Products saved to file: " << fileName << endl;
 	}
 	else {
 		cerr << "Could not open the file to writing." << endl;
-		return;
 	}
 }

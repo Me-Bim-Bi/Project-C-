@@ -4,7 +4,7 @@
 
 #include "EmployeeHandler.h"
 #include "ProductHandler.h"
-
+#include "Menu.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -13,7 +13,7 @@ using namespace std;
 
 void EmployeeHandler::expand() {
 	this->capacity += 5;
-	Employee** temp = new Employee* [this->capacity]{nullptr};
+	auto** temp = new Employee* [this->capacity]{nullptr};
 	for(int i = 0; i < this->nrOfCurrent; i++) {
 		temp[i] = this->employees[i];
 	}
@@ -26,6 +26,7 @@ void EmployeeHandler::freeMemory() {
 		delete employees[i];
 	}
 	delete[] employees;
+	employees = nullptr;
 }
 
 int EmployeeHandler::findIdIndex(int id) const {
@@ -53,7 +54,7 @@ capacity(other.capacity), employees(new Employee*[other.capacity]{nullptr}) {
 	}
 }
 
-void EmployeeHandler::operator=(const EmployeeHandler &other) {
+EmployeeHandler& EmployeeHandler::operator=(const EmployeeHandler &other) {
 	if(this != &other) {
 		freeMemory();
 		this->nrOfCurrent = other.nrOfCurrent;
@@ -63,25 +64,56 @@ void EmployeeHandler::operator=(const EmployeeHandler &other) {
 			employees[i] = new Employee (*other.employees[i]);
 		}
 	}
+	return *this;
 }
 
 void EmployeeHandler::addEmployee() {
 	int id = -1;
-	string name;
-	double baseSalary = 0.0, salesCommission = 0.0f;
 	while (true) {
+		string input;
 		cout << "\nID: ";
-		cin >> id;
-		if (cin.fail() || id < 0) { //check if the input data less than 0 or not a number
-			cin.clear(); //delete the wrong status
-			cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-			cout << "Invalid input. ID must be a positive number. Please try again.\n";
-		} else {
-			break;
+		cin >> input;
+		bool isNumeric = true;
+
+		for (char cha : input) {
+			if (!isdigit(cha)) {
+				isNumeric = false;
+				break;
+			}
 		}
+		if(!isNumeric) {
+			cout << "Invalid input. ID must be a number. Please try again.\n" << endl;
+		}
+		else {
+			try {
+				long long temp = stoll (input);
+				// check if input is within the range of int
+				if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
+					throw out_of_range("Number out of range for int type.");
+				}
+				else {
+					id = static_cast<int>(temp);
+				}
+				if (id < 0) {
+					cout << "Invalid input. ID must be a positive number. Please try again.\n";
+				} else {
+					break;
+				}
+			} catch (invalid_argument&) {
+				cout << "Invalid input. ID must be a valid number. Please try again.\n";
+			} catch (out_of_range&) {
+				cout << "You must have entered the wrong information. "
+			"The number you entered is too large or too small for become an ID number. Please try again.\n";
+			}
+		}
+		cin.clear(); //delete the wrong status
+		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
 	}
 	cin.ignore();
 	if(findIdIndex(id) == -1) {
+		double salesCommission = 0.0f;
+		double baseSalary = 0.0;
+		string name;
 		if(nrOfCurrent == capacity) {
 			expand();
 		}
@@ -96,16 +128,56 @@ void EmployeeHandler::addEmployee() {
 }
 
 void EmployeeHandler::editIdEmployee (int id) const {
-	int index = findIdIndex(id);
-	if (index != -1) {
-		if (ProductHandler::askYesNo("Do you want to edit the id of this employee? ")) {
+	if (int index = findIdIndex(id); index != -1) {
+		if (askYesNo("Do you want to edit the id of this employee? ")) {
 			int newID = 0;
-			cin >> newID;
+			while (true) {
+				string input;
+				cout << "\nNew ID: ";
+				cin >> input;
+				bool isNumeric = true;
+
+				for (char cha : input) {
+					if (!isdigit(cha)) {
+						isNumeric = false;
+						break;
+					}
+				}
+				if(!isNumeric) {
+					cout << "Invalid input. ID must be a number. Please try again.\n" << endl;
+				}
+				else {
+					try {
+						long long temp = stoll (input);
+						// check if input is within the range of int
+						if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
+							throw out_of_range("Number out of range for int type.");
+						}
+						else {
+							newID = static_cast<int>(temp);
+						}
+
+						if (newID < 0) {
+							cout << "Invalid input. ID must be a positive number. Please try again.\n";
+						} else {
+							break;
+						}
+					} catch (invalid_argument&) {
+						cout << "Invalid input. ID must be a valid number. Please try again.\n";
+					} catch (out_of_range&) {
+						cout << "You must have entered the wrong information. "
+					"The number you entered is too large or too small for become an ID number. Please try again.\n";
+					}
+				}
+				cin.clear(); //delete the wrong status
+				cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
+			}
+			cin.ignore();
 			if (findIdIndex(newID) != -1) {
 				cout << "Error! The new ID you entered already exists. The id changed failed." << endl;
 			}
 			else {
-				employees[index]->editID();
+				employees[index]->setID(newID);
 				cout << "The employee's id has been edited." << endl;
 			}
 		}
@@ -118,14 +190,13 @@ void EmployeeHandler::editIdEmployee (int id) const {
 	}
 }
 
-void EmployeeHandler::editEmployee(int id) {
-	int index = findIdIndex(id);
-	if (index != -1) {
+void EmployeeHandler::editEmployee(int id) const {
+	if (int index = findIdIndex(id); index != -1) {
 		cout << "The employee with the id number " << id << " have got following information: " << endl
 		<< employees[index]->showInfo() << endl;
-		if (ProductHandler::askYesNo("Is it the employee that you want to edit? ")) {
+		if (askYesNo("Is it the employee that you want to edit? ")) {
 			editIdEmployee(id);
-			if (ProductHandler::askYesNo("Do you want change the another information of this employee? ")) {
+			if (askYesNo("Do you want change the another information of this employee? ")) {
 				employees[index]->editInfoButNotID();
 				cout << "The employee's information has been edited." << endl;
 			}
@@ -143,11 +214,10 @@ void EmployeeHandler::editEmployee(int id) {
 }
 
 void EmployeeHandler::removeEmployee(int id) {
-	int index = findIdIndex(id);
-	if (index != -1) {
+	if (int index = findIdIndex(id); index != -1) {
 		cout << "The employee with the id " << id << " have got the following information: " << endl
 		<< employees[index]->showInfo() << endl;
-		if (ProductHandler::askYesNo("Do you want to remove this employee? ")) {
+		if (askYesNo("Do you want to remove this employee? ")) {
 			delete employees[index];
 			nrOfCurrent--;
 			employees[index] = employees[nrOfCurrent];
@@ -175,8 +245,7 @@ void EmployeeHandler::findEmployeeAndShowInfo(int id) const {
 }
 
 void EmployeeHandler::addCommission(int id, double salesCommission) const {
-	int index = findIdIndex(id);
-	if(index != -1) {
+	if(int index = findIdIndex(id); index != -1) {
 		double currentCommission = employees[index]->getSalesCommission();
 		double newCommission = currentCommission + salesCommission;
 		employees[index]->setSalesCommission(newCommission);
@@ -234,7 +303,7 @@ void EmployeeHandler::loadEmployeesFromFie(const string &fileName) {
 				addEmployeeFromFile(id, name, baseSalary, salesCommission);
 
 			}
-			catch(exception& e){
+			catch(exception&){
 				cerr << "Error in line: " << lineNumber << ". Invalid data. Skipping..." << endl;
 			}
 		}
@@ -259,7 +328,7 @@ void EmployeeHandler::addEmployeeFromFile(int id, const string &name, double bas
 	}
 }
 
-void EmployeeHandler::saveEmployeesToFile(const string &fileName) {
+void EmployeeHandler::saveEmployeesToFile(const string &fileName) const {
 	ofstream out(fileName);
 	if(out.is_open()) {
 		for(int i = 0; i < this->nrOfCurrent; i++){
@@ -269,13 +338,16 @@ void EmployeeHandler::saveEmployeesToFile(const string &fileName) {
 			double salesCommission = employees[i]->getSalesCommission();
 
 			out << id << ',' << name << ',' << baseSalary << ',' << salesCommission << '\n';
-			}
+		}
+		if(out.fail()) {
+			cerr << "Error! Something happened when we tried to save the file." << endl;
+		}
+		else {
+			cout << "All employees information saved to file: " << fileName << endl;
+		}
 		out.close();
-		cout << "All employees information saved to file: " << fileName << endl;
 	}
 	else {
 		cerr << "Could not open the file to writing." << endl;
-		return;
 	}
 }
-

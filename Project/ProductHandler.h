@@ -30,10 +30,8 @@ public:
 
 	void showInfo () const;
 
-	static bool askYesNo(const string& question);
-
 	void loadProductsFromFie(const string& fileName);
-	void saveProductsToFile(const string& fileName);
+	void saveProductsToFile(const string& fileName) const;
 
 };
 

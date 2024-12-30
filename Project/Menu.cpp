@@ -4,6 +4,10 @@
 
 #include "Menu.h"
 #include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <algorithm> // to use "transform" to change string input in function "askYesNO" to capital letters
+#include <cctype> // to "toupper" to change string input in function "askYesNO" to capital letters
 
 using namespace std;
 
@@ -77,5 +81,20 @@ int checkInputDataInt() {
 	return id;
 }
 
+bool askYesNo(const string &question) {
+	string input;
+	while (true) {
+		cout << question << " (yes/no): ";
+		cin >> input;
+		transform(input.begin(), input.end(), input.begin(), ::toupper);
+		if (input == "YES") {
+			return true;
+		} else if (input == "NO") {
+			return false;
+		} else {
+			cout << "Invalid input! Please enter 'yes' or 'no'." << endl;
+		}
+	}
+}
 
 

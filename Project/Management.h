@@ -9,11 +9,19 @@
 
 
 class Management {
-	//income = totalRevenue - (totalCostOfGoods + totalSalary)
+private:
+	double profit;
+	double revenue;
+	double cost;
+	void totalRevenue(const ProductHandler& pro);
+	void totalCost(const ProductHandler& pro, const EmployeeHandler& emp);
+	void finalProfit();
+public:
+	Management(const ProductHandler& pro, const EmployeeHandler& emp);
+	~Management();
 
-
+	void showInfo() const;
+	void saveToFile(const string& fileName) const;
 };
-
-
 
 #endif //MANAGEMENT_H

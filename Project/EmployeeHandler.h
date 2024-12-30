@@ -21,11 +21,11 @@ public:
 	explicit EmployeeHandler(int capacity = 5);
 	~EmployeeHandler();
 	EmployeeHandler(const EmployeeHandler& other);
-	void operator=(const EmployeeHandler& other);
+	EmployeeHandler& operator=(const EmployeeHandler& other);
 
 	void addEmployee();
 	void editIdEmployee(int id) const;
-	void editEmployee(int id);
+	void editEmployee(int id) const;
 	void removeEmployee(int id);
 	void findEmployeeAndShowInfo(int id) const;
 	void addCommission(int id, double salesCommission) const;
@@ -37,7 +37,7 @@ public:
 
 	void loadEmployeesFromFie(const string& fileName);
 	void addEmployeeFromFile(int id, const string& name, double baseSalary, double salesCommission);
-	void saveEmployeesToFile(const string& fileName);
+	void saveEmployeesToFile(const string& fileName) const;
 
 
 };

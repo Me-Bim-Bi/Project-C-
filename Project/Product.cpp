@@ -18,7 +18,7 @@ quantityImported(quantityImported){
 
 Product::~Product() {
 }
-
+/*
 int Product::getID() const {
 	return this->id;
 }
@@ -74,7 +74,7 @@ void Product::setQuantitySold(int quantitySold) {
 void Product::setQuantityImported(int quantityImported) {
 	this->quantityImported = quantityImported;
 }
-
+*/
 void Product::editId() {
 	while (true) {
 		string input;
@@ -92,13 +92,10 @@ void Product::editId() {
 		}
 		else {
 			try {
-				long long temp = stoll (input);
-
 				// check if input is within the range of int
-				if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
+				if (long long temp = stoll (input); temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
 					throw out_of_range("Number out of range for int type.");
 				}
-
 				else {
 					id = static_cast<int>(temp);
 				}
@@ -330,8 +327,6 @@ void Product::editQuantityImported() {
 	}
 	cin.ignore();
 }
-
-
 
 void Product::editInfoButNotID(){
 	editName();

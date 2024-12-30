@@ -71,12 +71,10 @@ void Employee::editID() {
 		else {
 			try {
 				long long temp = stoll (input);
-
 				// check if input is within the range of int
 				if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
 					throw out_of_range("Number out of range for int type.");
 				}
-
 				else {
 					id = static_cast<int>(temp);
 				}
