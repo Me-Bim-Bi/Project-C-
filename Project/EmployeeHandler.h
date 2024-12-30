@@ -18,24 +18,26 @@ private:
 	void freeMemory();
 	int findIdIndex(int id) const;
 public:
-	EmployeeHandler(int capacity = 5);
+	explicit EmployeeHandler(int capacity = 5);
 	~EmployeeHandler();
 	EmployeeHandler(const EmployeeHandler& other);
 	void operator=(const EmployeeHandler& other);
 
-	void addEmployee(int id = 0, string name = "?", float salary = 0.0f, float salesCommission = 0.0f);
-	void editIdEmployee(int id);
+	void addEmployee();
+	void editIdEmployee(int id) const;
 	void editEmployee(int id);
 	void removeEmployee(int id);
 	void findEmployeeAndShowInfo(int id) const;
-	void addCommission(int id, float salesCommission);
+	void addCommission(int id, double salesCommission) const;
 
 	int callFindIdIndex(int id) const;
 
+	double totalSalary() const;
 	void showInfo() const;
 
 	void loadEmployeesFromFie(const string& fileName);
-	//void saveEmployeesToFile(const string& fileName, Employee** employees, int nrOfCurrent);
+	void addEmployeeFromFile(int id, const string& name, double baseSalary, double salesCommission);
+	void saveEmployeesToFile(const string& fileName);
 
 
 };

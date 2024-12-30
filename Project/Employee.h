@@ -12,29 +12,31 @@ class Employee {
 private:
 	int id;
 	string name;
-	float salary;
-	float salesCommission;
+	double baseSalary;
+	double salesCommission;
 
 public:
-	Employee(int id = 0, string name = "?", float salary = 0.0f, float salesCommission = 0.0f);
+	Employee(int id = 0, string name = "?", double baseSalary = 0.0f, double salesCommission = 0.0f);
 	~Employee();
 
 	int getId() const;
 	string getName() const;
-	float getSalary() const;
-	float getsalesCommission() const;
+	double getBaseSalary() const;
+	double getSalesCommission() const;
 
 	void setID(int id);
 	void setName(const string& name);
-	void setSalary(float salary);
-	void setSalesCommission( float salesCommission);
+	void setBaseSalary(double baseSalary);
+	void setSalesCommission(double salesCommission);
 
-	void totalIncome();
+	double totalIncome() const;
 
+	void editID();
+	void editName();
+	void editBaseSalary();
+	void editSalesCommission();
 	void editInfoButNotID();
 	string showInfo() const;
 };
-
-
 
 #endif //EMPLOYEE_H

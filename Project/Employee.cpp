@@ -4,10 +4,13 @@
 
 #include "Employee.h"
 #include <iostream>
+#include <string>
+#include <iomanip>
+#include <sstream>
 
 using namespace std;
 
-Employee::Employee(int id, string name, float salary, float salesCommission):id(id), name(name), salary(salary), salesCommission(0) {
+Employee::Employee(int id, string name, double baseSalary, double salesCommission):id(id), baseSalary(baseSalary), name(name),salesCommission(salesCommission) {
 }
 
 Employee::~Employee() {
@@ -21,11 +24,11 @@ string Employee::getName() const {
 	return this->name;
 }
 
-float Employee::getSalary() const {
-	return this->salary;
+double Employee::getBaseSalary() const {
+	return this->baseSalary;
 }
 
-float Employee::getsalesCommission() const {
+double Employee::getSalesCommission() const {
 	return this->salesCommission;
 }
 
@@ -37,28 +40,152 @@ void Employee::setName(const string &name) {
 	this->name = name;
 }
 
-void Employee::setSalary(float salary) {
-	this->salary = salary;
+void Employee::setBaseSalary(double baseSalary) {
+	this->baseSalary = baseSalary;
 }
 
-void Employee::setSalesCommission(float salesCommission) {
-	this->salesCommission += salesCommission;;
+void Employee::setSalesCommission(double salesCommission) {
+	this->salesCommission = salesCommission;;
+}
+
+double Employee::totalIncome() const {
+	return this->baseSalary + this->salesCommission;
+}
+
+void Employee::editID() {
+	while (true) {
+		string input;
+		cout << "\nID: ";
+		cin >> input;
+		bool isNumeric = true;
+
+		for (char cha : input) {
+			if (!isdigit(cha)) {
+				isNumeric = false;
+				break;
+			}
+		}
+		if(!isNumeric) {
+			cout << "Invalid input. ID must be a number. Please try again.\n" << endl;
+		}
+		else {
+			try {
+				long long temp = stoll (input);
+
+				// check if input is within the range of int
+				if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
+					throw out_of_range("Number out of range for int type.");
+				}
+
+				else {
+					id = static_cast<int>(temp);
+				}
+
+				if (id < 0) {
+					cout << "Invalid input. ID must be a positive number. Please try again.\n";
+				} else {
+					break;
+				}
+			} catch (invalid_argument&) {
+				cout << "Invalid input. ID must be a valid number. Please try again.\n";
+			} catch (out_of_range&) {
+				cout << "You must have entered the wrong information. "
+			"The number you entered is too large or too small for become an ID number. Please try again.\n";
+			}
+		}
+		cin.clear(); //delete the wrong status
+		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
+	}
+	cin.ignore();
+}
+
+void Employee::editName() {
+	cout << "\nName: ";
+	getline(cin, name);
+}
+
+void Employee::editBaseSalary() {
+	while (true) {
+		string input;
+		cout << "\nBase salary: ";
+		cin >> input;
+
+		try {
+			size_t onlyNumber;
+			double temp = stod(input, &onlyNumber);
+
+			if(onlyNumber != input.size()) {
+				throw invalid_argument("Contains invalid characters");
+			}
+			if (temp < 0) {
+				cout << "Input is less than 0. Base salary must be a positive number. Please try again.\n" << endl;
+			}
+			else {
+				baseSalary = temp;
+				break;
+			}
+		}
+		catch (invalid_argument&) {
+			cout << "Invalid input. Base salary must be a positive number. Please try again.\n" << endl;
+		}
+		catch (out_of_range&) {
+			cout << "You must have entered the wrong information"
+			<< ". No one has that much salary." << endl;
+		}
+		cin.clear(); //delete the wrong status
+		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
+	}
+	cin.ignore();
+}
+
+void Employee::editSalesCommission() {
+	while (true) {
+		string input;
+		cout << "\nSales commission: ";
+		cin >> input;
+
+		try {
+			size_t onlyNumber;
+			double temp = stod(input, &onlyNumber);
+
+			if(onlyNumber != input.size()) {
+				throw invalid_argument("Contains invalid characters");
+			}
+			if (temp < 0) {
+				cout << "Input is less than 0. Sales commission must be a positive number. Please try again.\n" << endl;
+			}
+			else {
+				salesCommission = temp;
+				break;
+			}
+		}
+		catch (invalid_argument&) {
+			cout << "Invalid input. Sales commission must be a positive number. Please try again.\n" << endl;
+		}
+		catch (out_of_range&) {
+			cout << "You must have entered the wrong information"
+			<< ". No one has that much sales commission." << endl;
+		}
+		cin.clear(); //delete the wrong status
+		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
+	}
+	cin.ignore();
 }
 
 void Employee::editInfoButNotID() {
-	cin.ignore();
-	cout << "\nName: ";
-	getline(cin, name);
-	cout << "\nSalary: ";
-	cin >> salary;
-	cin.ignore();
-	cout << "\nsales commission: ";
-	cin >> salesCommission;
-	cin.ignore();
+	editName();
+	editBaseSalary();
+	editSalesCommission();
 }
 
 string Employee::showInfo() const {
-	return "ID: " + to_string(id) + ", name: " + name + ", base salary: " + to_string(salary)
-	+ ", sales commission: " + to_string(salesCommission) + ", total income: "
-	+ to_string(salary + salesCommission) ;
+	ostringstream stringInfo;
+	stringInfo << fixed << setprecision(0);
+	stringInfo << "ID: " << id
+	<< ", name: " << name
+	<< ", base salary: " << baseSalary
+	<< ", sales commission: " << salesCommission
+	<< ", total income: " << totalIncome();
+	return stringInfo.str();
 }
+

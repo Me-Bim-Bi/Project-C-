@@ -50,8 +50,8 @@ public:
 
 	virtual bool operator ==(const Product& other) const = 0;
 
-	float totalCostOfGoods() const;
-	float totalRevenue() const;
+	double totalCostOfGoods() const;
+	double totalRevenue() const;
 	int endOfDayInventory() const;
 
 	virtual string showInfo() const = 0;

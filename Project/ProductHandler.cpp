@@ -44,7 +44,7 @@ ProductHandler::ProductHandler(const ProductHandler &other) {
 	}
 }
 
-ProductHandler ProductHandler::operator=(const ProductHandler &other) {
+ProductHandler& ProductHandler::operator=(const ProductHandler &other) {
 	if(this != & other) {
 		for (auto product : products) {
 			delete product;
@@ -101,27 +101,60 @@ void ProductHandler::removeProduct(const int id) {
 			cout << "The product has been deleted." << endl;
 		}
 		else{
-			cout << "Product with ID: " << id << " was not found!";
+			cout << "Product with ID: " << id << " was not deleted!" << endl;
 		}
+	}
+	else {
+		cout << "Product with ID: " << id << " was not found." << endl;
 	}
 }
 
-void ProductHandler::editProductId(int id) {
+void ProductHandler::editProductId(int id) const {
 	int index = findIndexProduct(id);
 	if (index != -1) {
 		if (askYesNo("Do you want to edit the id of this product? ")) {
 			int newID;
 			while (true) {
-
+				string input;
 				cout << "\nNew ID: ";
-				cin >> newID;
-				if (cin.fail() || newID < 0) { //check if the input data less than 0 or not a number
-					cin.clear(); //delete the wrong status
-					cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-					cout << "Invalid input. ID must be a positive number. Please try again.\n";
-				} else {
-					break;
+				cin >> input;
+				bool isNumeric = true;
+				for (char cha : input) {
+					if (!isdigit(cha)) {
+						isNumeric = false;
+						break;
+					}
 				}
+				if(!isNumeric) {
+					cout << "Invalid input. ID must be a number. Please try again.\n" << endl;
+				}
+				else {
+					try {
+						long long temp = stoll (input);
+
+						// check if input is within the range of int
+						if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
+							throw out_of_range("Number out of range for int type.");
+						}
+
+						else {
+							newID = static_cast<int>(temp);
+						}
+
+						if (newID < 0) {
+							cout << "Invalid input. ID must be a positive number. Please try again.\n";
+						} else {
+							break;
+						}
+					} catch (invalid_argument&) {
+						cout << "Invalid input. ID must be a valid number. Please try again.\n";
+					} catch (out_of_range&) {
+						cout << "You must have entered the wrong information. "
+					"The number you entered is too large or too small for become an ID number. Please try again.\n";
+					}
+				}
+				cin.clear(); //delete the wrong status
+				cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
 			}
 			cin.ignore();
 			if (findIndexProduct(newID) != -1) {
@@ -141,7 +174,7 @@ void ProductHandler::editProductId(int id) {
 	}
 }
 
-void ProductHandler::editProduct(const int id) {
+void ProductHandler::editProduct(const int id) const {
 	int index = findIndexProduct(id);
 	if (index != -1) {
 		cout << "The product with the id number " << id << " have got following information: " << endl
@@ -166,27 +199,23 @@ void ProductHandler::editProduct(const int id) {
 	}
 }
 
-void ProductHandler::sellProduct(int idProduct, int quantitySale, int idEmployee, EmployeeHandler& emp) {
+void ProductHandler::sellProduct(int idProduct, int quantitySale, int idEmployee, EmployeeHandler& emp) const {
 	int index = findIndexProduct(idProduct);
-	if(index != -1) {
-		int quantityInStock = products[index]->getQuantityBeginningInventory()+products[index]->getQuantityImported();
+	if(index != -1 && emp.callFindIdIndex(idEmployee) != -1) {
+		int quantity = products[index]->getQuantityBeginningInventory()+products[index]->getQuantityImported();
 		int totalQuantitySold = products[index]->getQuantitySold()+quantitySale;
-		if(totalQuantitySold <= quantityInStock) {
+		if(totalQuantitySold <= quantity) {
 			products[index]->setQuantitySold(totalQuantitySold);
-			if(emp.callFindIdIndex(idEmployee) != -1) {
-				float employeeCommission = (products[index]->getSellingPrice() * quantitySale) * 0.02;
-				emp.addCommission(idEmployee,employeeCommission);
+			auto employeeCommission = products[index]->getSellingPrice() * static_cast<double>(quantitySale) * 0.02;
+			emp.addCommission(idEmployee,employeeCommission);
 			}
-			else {
-				cout << "The employee's ID " << idEmployee << " was not found. The commission has not been credited to anyone." << endl;
-			}
-		}
 		else {
-			cout << "The product with id " << idProduct << " is out of stock." << endl;
-		}
+			cout << "The product " << idProduct<< " is out of stock." << endl;
+			}
 	}
 	else {
-		cout << "Sorry! We don't have any product with id " << idProduct << " in store." << endl;
+		cout << "Sorry! We don't have any product with id " << idProduct << " in store"
+		<< " or the employee with id " << idEmployee << "does not exist." << endl;
 	}
 }
 
@@ -206,7 +235,7 @@ double ProductHandler::totalRevenue() const {
 	return total;
 }
 
-void ProductHandler::showProduct() const {
+void ProductHandler::showInfo() const {
 	int index = 1;
 	cout << "\nProduct in store now:\n";
 	for (auto product : products) {
@@ -236,62 +265,74 @@ bool ProductHandler::askYesNo(const string &question) {
 
 void ProductHandler::loadProductsFromFie(const string &fileName) {
 	ifstream in(fileName);
-	if(in.is_open()) {
-		string line;
-		int lineNumber = 0;
-		while (getline(in, line)) {
-			++lineNumber;
-			istringstream input(line);
-			string typeProduct, name;
-			int id = 0, quantityBeginningInventory = 0, quantitySold = 0, quantityImported = 0;
-			float purchasePrice = 0.0f, sellingPrice = 0.0f;
-
-			getline(input, typeProduct, ',');
-			if(typeProduct == "Clothing" || typeProduct == "Cosmetic") {
-				input >> id;
-				input.ignore();
-				getline(input, name, ',');
-				input >> purchasePrice;
-				input.ignore();
-				input >> sellingPrice;
-				input.ignore();
-				input >> quantityBeginningInventory;
-				input.ignore();
-				input >> quantitySold;
-				input.ignore();
-				input >> quantityImported;
-				input.ignore();
-			}
-			Product* product = nullptr;
-			if(typeProduct == "Clothing") {
-				string size;
-				string colour;
-				getline(input, size, ',');
-				getline(input, colour, ',');
-				product = new Clothing (id, name, purchasePrice, sellingPrice, quantityBeginningInventory, quantitySold,
-					quantityImported, size, colour);
-			}
-			else if (typeProduct == "Cosmetic") {
-				string typeCosmetic;
-				getline(input, typeCosmetic, '\n');
-				product = new Cosmetic (id, name, purchasePrice, sellingPrice, quantityBeginningInventory, quantitySold,
-					quantityImported, typeCosmetic);
-			}
-			else {
-				cerr << "Error in line: " << lineNumber << ": Unknown product format. Skipping." << endl;
-				continue;
-			}
-			if(product) {
-				importProduct(product);
-				delete product;
-			}
-		}
-		in.close();
+	if(!in.is_open()) {
+		cerr << "Could not open the file: " << fileName << " for reading" << endl;
+		return;              //throw the error message and stopp reading
 	}
 	else {
-		cerr << "The file was not found or could not be opened." << endl
-		<< "The inventory was not updated." << endl;
-		return;
+		string line;
+		int lineNumber = 0; //count the line number to show the error message
+
+		while(getline(in, line)) { //read through all lines to the end
+			++lineNumber;
+			istringstream input(line);
+			vector <string> productInformation;    //create a vector to check the input data
+			string aProduct;
+
+			while(getline(input,aProduct,',')) {  //add input data to vector
+				productInformation.push_back(aProduct);
+			}
+
+			if(productInformation.size() < 9) {
+				cerr << "Error on line: " << lineNumber <<". Unknown product format. Skipping..." << endl;
+				continue;
+			}
+			string productType= productInformation[0], name = productInformation[2];
+			try {
+				int id = stoi(productInformation[1]);      //check if input data is valid, throw error message if it fails
+				float purchasePrice = stof(productInformation[3]);
+				float sellingPrice = stof(productInformation[4]);
+				int quantityBeginningInventory = stoi(productInformation[5]);
+				int quantitySold = stoi(productInformation[6]);
+				int quantityImported = stoi(productInformation[7]);
+
+				Product* product = nullptr;
+				if(productType == "Clothing") {   //check if product type is Clothing to add product
+					if(productInformation.size() != 10) {
+						cerr << "Error on line: " << lineNumber << ". Invalid data. Must be 10 fields. Skipping..." << endl;
+						continue;
+					}
+					else {
+						const string& size = productInformation[8];
+						const string& colour = productInformation[9];
+						product = new Clothing(id, name, purchasePrice, sellingPrice, quantityBeginningInventory,
+							quantitySold, quantityImported, size, colour);
+					}
+				}
+				else if(productType == "Cosmetic") {
+					//check if product type is Cosmetic to add product
+					if(productInformation.size() == 9) {
+						cerr << "Error on line: " << lineNumber << ". Invalid data. Must be 9 fields. Skipping..." << endl;
+						continue;
+					}
+					else {
+						const string& typeCosmetic = productInformation[8];
+						product = new Cosmetic(id, name, purchasePrice, sellingPrice, quantityBeginningInventory,
+						quantitySold, quantityImported, typeCosmetic);
+					}
+				}
+				else {
+					cerr << "Error on line: " << lineNumber << ". Unknown product type. Skipping..." << endl;
+					continue;
+				}
+				if(product != nullptr) {
+					importProduct(product); //add product
+				}
+			}
+			catch (exception& e){
+				cerr << "Error in line: " << lineNumber << ". Invalid data. Skipping..." << endl;
+			}
+		}
 	}
 }
 

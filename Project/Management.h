@@ -5,6 +5,7 @@
 #ifndef MANAGEMENT_H
 #define MANAGEMENT_H
 #include "ProductHandler.h"
+#include "EmployeeHandler.h"
 
 
 class Management {

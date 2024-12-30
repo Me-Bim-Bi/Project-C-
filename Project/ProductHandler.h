@@ -16,19 +16,19 @@ public:
 	ProductHandler();
 	virtual~ProductHandler();
 	ProductHandler(const ProductHandler& other);
-	ProductHandler operator=(const ProductHandler& other);
+	ProductHandler& operator=(const ProductHandler& other);
 
 	void importProduct(Product* product);
 	void findAndShowProduct(int id) const;
 	void removeProduct(int id);
-	void editProductId(int id);
-	void editProduct(int id);
+	void editProductId(int id) const;
+	void editProduct(int id) const;
 
-	void sellProduct(int idProduct, int quantitySale, int idEmployee, EmployeeHandler& emp);
+	void sellProduct(int idProduct, int quantitySale, int idEmployee, EmployeeHandler& emp) const;
 	double totalCostOfProducts() const;
 	double totalRevenue() const;
 
-	void showProduct () const;
+	void showInfo () const;
 
 	static bool askYesNo(const string& question);
 

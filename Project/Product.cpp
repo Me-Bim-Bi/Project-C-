@@ -3,8 +3,10 @@
 //
 
 #include "Product.h"
-#include <iostream>
 #include "ProductHandler.h"
+#include <iostream>
+#include <iomanip>
+#include <sstream>
 
 using namespace std;
 
@@ -75,15 +77,46 @@ void Product::setQuantityImported(int quantityImported) {
 
 void Product::editId() {
 	while (true) {
+		string input;
 		cout << "\nID: ";
-		cin >> id;
-		if (cin.fail() || id < 0) { //check if the input data less than 0 or not a number
-			cin.clear(); //delete the wrong status
-			cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-			cout << "Invalid input. ID must be a positive number. Please try again.\n";
-		} else {
-			break;
+		cin >> input;
+		bool isNumeric = true;
+		for (char cha : input) {
+			if (!isdigit(cha)) {
+				isNumeric = false;
+				break;
+			}
 		}
+		if(!isNumeric) {
+			cout << "Invalid input. ID must be a number. Please try again.\n" << endl;
+		}
+		else {
+			try {
+				long long temp = stoll (input);
+
+				// check if input is within the range of int
+				if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
+					throw out_of_range("Number out of range for int type.");
+				}
+
+				else {
+					id = static_cast<int>(temp);
+				}
+
+				if (id < 0) {
+					cout << "Invalid input. ID must be a positive number. Please try again.\n";
+				} else {
+					break;
+				}
+			} catch (invalid_argument&) {
+				cout << "Invalid input. ID must be a valid number. Please try again.\n";
+			} catch (out_of_range&) {
+				cout << "You must have entered the wrong information. "
+			"The number you entered is too large or too small for become an ID number. Please try again.\n";
+			}
+		}
+		cin.clear(); //delete the wrong status
+		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
 	}
 	cin.ignore();
 }
@@ -95,75 +128,205 @@ void Product::editName() {
 
 void Product::editPurchasePrice() {
 	while (true) {
+		string input;
 		cout << "\nPurchase price: ";
-		cin >> purchasePrice;
-		if (cin.fail() || purchasePrice < 0) { //check if the input data less than 0 or not a number
-			cin.clear(); //delete the wrong status
-			cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-			cout << "Invalid input. Purchase price must be a positive number. Please try again.\n";
-		} else {
-			break;
+		cin >> input;
+
+		try {
+			size_t onlyNumber;
+			float temp = stof(input, &onlyNumber);
+
+			if(onlyNumber != input.size()) {
+				throw invalid_argument("Contains invalid characters");
+			}
+			if (temp < 0) {
+				cout << "Input is less than 0. Purchase price must be a positive number. Please try again.\n" << endl;
+			}
+			else {
+				purchasePrice = temp;
+				break;
+			}
 		}
+		catch (invalid_argument&) {
+			cout << "Invalid input. Purchase price must be a positive number. Please try again.\n" << endl;
+		}
+		catch (out_of_range&) {
+			cout << "You must have entered the wrong information"
+			<< ". We do not have anything that expensive." << endl;
+		}
+		cin.clear(); //delete the wrong status
+		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
 	}
 	cin.ignore();
 }
 
 void Product::editSellingPrice() {
 	while (true) {
+		string input;
 		cout << "\nSelling price: ";
-		cin >> sellingPrice;
-		if (cin.fail() || sellingPrice < 0) { //check if the input data less than 0 or not a number
-			cin.clear(); //delete the wrong status
-			cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-			cout << "Invalid input. Selling price must be a positive number. Please try again.\n";
-		} else {
-			break;
+		cin >> input;
+
+		try {
+			size_t onlyNumber;
+			float temp = stof(input, &onlyNumber);
+
+			if(onlyNumber != input.size()) {
+				throw invalid_argument("Contains invalid characters");
+			}
+			if (temp < 0) {
+				cout << "Input is less than 0. Selling price must be a positive number. Please try again.\n" << endl;
+			}
+			else {
+				sellingPrice = temp;
+				break;
+			}
 		}
+		catch (invalid_argument&) {
+			cout << "Invalid input. Selling price must be a positive number. Please try again.\n" << endl;
+		}
+		catch (out_of_range&) {
+			cout << "You must have entered the wrong information"
+			<< ". We do not sale anything that expensive." << endl;
+		}
+		cin.clear(); //delete the wrong status
+		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
 	}
 	cin.ignore();
 }
 
-void Product::editQuantityBeginningInventory() {
+void Product::editQuantityBeginningInventory(){
 	while (true) {
+		string input;
 		cout << "\nBeginning inventory quantity: ";
-		cin >> quantityBeginningInventory;
-		if (cin.fail() || quantityBeginningInventory < 0) { //check if the input data less than 0 or not a number
-			cin.clear(); //delete the wrong status
-			cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-			cout << "Invalid input. The beginning inventory quantity must be a positive number. Please try again.\n";
-		} else {
-			break;
+		cin >> input;
+		bool isNumeric = true;
+		for (char cha : input) {
+			if (!isdigit(cha)) {
+				isNumeric = false;
+				break;
+			}
 		}
+		if(!isNumeric) {
+			cout << "Invalid input. Beginning inventory quantity must be a number. Please try again.\n" << endl;
+		}
+		else {
+			try {
+				long long temp = stoll (input);
+
+				// check if input is within the range of int
+				if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
+					throw out_of_range("Number out of range for int type.");
+				}
+				else {
+					quantityBeginningInventory = static_cast<int>(temp);
+				}
+
+				if (quantityBeginningInventory < 0) {
+					cout << "Invalid input. Beginning inventory quantity must be a positive number. Please try again.\n";
+				} else {
+					break;
+				}
+			} catch (invalid_argument&) {
+				cout << "Invalid input. Beginning inventory quantity must be a valid number. Please try again.\n";
+			} catch (out_of_range&) {
+				cout << "You must have entered the wrong information. "
+			"We do not have so many products in our stock. Please try again.\n";
+			}
+		}
+		cin.clear(); //delete the wrong status
+		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
 	}
 	cin.ignore();
 }
 
 void Product::editQuantitySold() {
 	while (true) {
+		string input;
 		cout << "\nSold quantity: ";
-		cin >> quantitySold;
-		if (cin.fail() || quantitySold < 0) { //check if the input data less than 0 or not a number
-			cin.clear(); //delete the wrong status
-			cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-			cout << "Invalid input. The sold quantity must be a positive number. Please try again.\n";
-		} else {
-			break;
+		cin >> input;
+		bool isNumeric = true;
+		for (char cha : input) {
+			if (!isdigit(cha)) {
+				isNumeric = false;
+				break;
+			}
 		}
+		if(!isNumeric) {
+			cout << "Invalid input. Sold quantity must be a number. Please try again.\n" << endl;
+		}
+		else {
+			try {
+				long long temp = stoll (input);
+
+				// check if input is within the range of int
+				if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
+					throw out_of_range("Number out of range for int type.");
+				}
+				else {
+					quantitySold = static_cast<int>(temp);
+				}
+
+				if (quantitySold < 0) {
+					cout << "Invalid input. Sold quantity must be a positive number. Please try again.\n";
+				} else {
+					break;
+				}
+			} catch (invalid_argument&) {
+				cout << "Invalid input. Sold quantity must be a valid number. Please try again.\n";
+			} catch (out_of_range&) {
+				cout << "You must have entered the wrong information."
+			" Unfortunately we can't sell that many products.. Please try again.\n";
+			}
+		}
+		cin.clear(); //delete the wrong status
+		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
 	}
 	cin.ignore();
 }
 
+
 void Product::editQuantityImported() {
 	while (true) {
+		string input;
 		cout << "\nImported quantity: ";
-		cin >> quantityImported;
-		if (cin.fail() || quantityImported < 0) { //check if the input data less than 0 or not a number
-			cin.clear(); //delete the wrong status
-			cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-			cout << "Invalid input. The imported quantity must be a positive number. Please try again.\n";
-		} else {
-			break;
+		cin >> input;
+		bool isNumeric = true;
+
+		for (char cha : input) {
+			if (!isdigit(cha)) {
+				isNumeric = false;
+				break;
+			}
 		}
+		if(!isNumeric) {
+			cout << "Invalid input. Imported quantity must be a number. Please try again.\n" << endl;
+		}
+		else {
+			try {
+				long long temp = stoll (input);
+
+				// check if input is within the range of int
+				if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
+					throw out_of_range("Number out of range for int type.");
+				}
+				else {
+					quantityImported = static_cast<int>(temp);
+				}
+
+				if (quantityImported < 0) {
+					cout << "Invalid input. Imported quantity must be a positive number. Please try again.\n";
+				} else {
+					break;
+				}
+			} catch (invalid_argument&) {
+				cout << "Invalid input. Imported quantity must be a valid number. Please try again.\n";
+			} catch (out_of_range&) {
+				cout << "You must have entered the wrong information."
+			" Our warehouse cannot import that much goods.. Please try again.\n";
+			}
+		}
+		cin.clear(); //delete the wrong status
+		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
 	}
 	cin.ignore();
 }
@@ -188,12 +351,12 @@ bool Product::operator==(const Product &other) const {
 						quantitySold == other.quantitySold;
 }
 
-float Product::totalCostOfGoods() const {
-	return purchasePrice*(quantityBeginningInventory + quantityImported);
+double Product::totalCostOfGoods() const{
+	return purchasePrice*(static_cast<float>(quantityBeginningInventory) + static_cast<float>(quantityImported));
 }
 
-float Product::totalRevenue() const {
-	return sellingPrice*quantitySold;
+double Product::totalRevenue() const {
+	return sellingPrice*static_cast<float>(quantitySold);
 }
 
 int Product::endOfDayInventory() const {
@@ -202,12 +365,17 @@ int Product::endOfDayInventory() const {
 }
 
 string Product::showInfo() const {
-	return name + ", id: " + to_string(id) + ", purchase price: "
-	+ to_string(purchasePrice) + ", selling price: " + to_string(sellingPrice)
-	+", \n\t beginning inventory: " + to_string(quantityBeginningInventory)
-	+ ", numbers of goods imported: " + to_string(quantityImported)
-	+ ", number of goods sold: " + to_string(quantitySold) + ", number of goods in stock: "
-	+ to_string(endOfDayInventory());
+	ostringstream stringInfo;
+	stringInfo << fixed << setprecision(2);
+	stringInfo << "ID: " << id
+	<< ", name: " << name
+	<< ", purchase price: " << purchasePrice
+	<< ", selling price: " << sellingPrice
+	<< ", beginning inventory: " << quantityBeginningInventory
+	<< ", number of goods imported: " << quantityImported
+	<< ", number of goods sold: " << quantitySold
+	<< ", number of goods in stock: " << endOfDayInventory();
+	return stringInfo.str();
 }
 
 Product * Product::clone() const {

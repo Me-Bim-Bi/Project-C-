@@ -29,12 +29,10 @@ using namespace std;
 
 int main() {
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-
 	EmployeeHandler employerHanderpointers;
 	ProductHandler productHanderVector;
-	productHanderVector.loadProductsFromFie("All products");
-	productHanderVector.showProduct();
-
+	employerHanderpointers.loadEmployeesFromFie("All Employees");
+	productHanderVector.loadProductsFromFie("All Products");
 	bool isWorking = true;
 	int answer;
 
@@ -44,7 +42,7 @@ int main() {
 		//catch and show the error if the input data is not valid
 		try {
 			cin >> answer;
-			if (cin.fail() || answer > 20 || answer < 1) {
+			if (cin.fail() || answer > 19 || answer < 1) {
 				throw invalid_argument("The input data is not valid!");
 			}
 		}
@@ -53,7 +51,7 @@ int main() {
 			cin.clear();
 			cin.ignore();
 		}
-		if(!cin.fail() && answer < 21 && answer > 0) {
+		if(!cin.fail() && answer < 20 && answer > 0) {
 			if(answer == 20) {
 				isWorking = false;
 			}
@@ -63,14 +61,14 @@ int main() {
 				clothing->editInfoButNotID();
 				productHanderVector.importProduct(clothing);
 				delete clothing;
-				productHanderVector.showProduct();
+				productHanderVector.showInfo();
 			}
 			else if (answer == 2) {
 				auto* cosmetic = new Cosmetic;
 				cosmetic->editId();
 				cosmetic->editInfoButNotID();
 				productHanderVector.importProduct(cosmetic);
-				productHanderVector.showProduct();
+				productHanderVector.showInfo();
 			}
 			else if (answer == 3) {
 				cout << "Insert the product id you want to find: ";
@@ -81,10 +79,43 @@ int main() {
 				cout << "Insert the product id you want to remove: ";
 				int checkId = checkInputDataInt();
 				productHanderVector.removeProduct(checkId);
-				productHanderVector.showProduct();
+				productHanderVector.showInfo();
 			}
 			else if (answer == 5) {
-				
+				cout << "Insert the product id you want to edit: ";
+				int checkId = checkInputDataInt();
+				productHanderVector.editProductId(checkId);
+				productHanderVector.showInfo();
+			}
+			else if (answer == 6) {
+				cout << "Insert the product id you want to edit: ";
+				int checkId = checkInputDataInt();
+				productHanderVector.editProduct(checkId);
+				productHanderVector.showInfo();
+			}
+			else if (answer == 7) {
+				cout << "Insert following information to sale a product: ";
+				cout << "\nProduct ID: ";
+				int checkProductID = checkInputDataInt();
+				cout << "\nEmployee ID: ";
+				int checkEmployeeID = checkInputDataInt();
+				cout << "\nHow many products do you sell? ";
+				int quantitySold = checkInputDataInt();
+				productHanderVector.sellProduct(checkProductID,quantitySold,checkEmployeeID,employerHanderpointers);
+				productHanderVector.showInfo();
+			}
+			else if (answer == 8) {
+				productHanderVector.showInfo();
+			}
+			else if (answer == 9) {
+				productHanderVector.saveProductsToFile("All products");
+			}
+			else if (answer == 10) {
+				employerHanderpointers.addEmployee();
+				employerHanderpointers.showInfo();
+			}
+			else if (answer == 15) {
+				employerHanderpointers.showInfo();
 			}
 		}
 	}
