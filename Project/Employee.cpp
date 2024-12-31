@@ -3,12 +3,10 @@
 //
 
 #include "Employee.h"
-#include <iostream>
+#include "FuntionToEditInformation.h"
 #include <string>
 #include <iomanip>
 #include <sstream>
-
-using namespace std;
 
 Employee::Employee(int id, string name, double baseSalary, double salesCommission):id(id), baseSalary(baseSalary), name(name),salesCommission(salesCommission) {
 }
@@ -45,121 +43,19 @@ double Employee::totalIncome() const {
 }
 
 void Employee::editID() {
-	while (true) {
-		string input;
-		cout << "\nID: ";
-		cin >> input;
-		bool isNumeric = true;
-
-		for (char cha : input) {
-			if (!isdigit(cha)) {
-				isNumeric = false;
-				break;
-			}
-		}
-		if(!isNumeric) {
-			cout << "Invalid input. ID must be a number. Please try again.\n" << endl;
-		}
-		else {
-			try {
-				long long temp = stoll (input);
-				// check if input is within the range of int
-				if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
-					throw out_of_range("Number out of range for int type.");
-				}
-				else {
-					id = static_cast<int>(temp);
-				}
-
-				if (id < 0) {
-					cout << "Invalid input. ID must be a positive number. Please try again.\n";
-				} else {
-					break;
-				}
-			} catch (invalid_argument&) {
-				cout << "Invalid input. ID must be a valid number. Please try again.\n";
-			} catch (out_of_range&) {
-				cout << "You must have entered the wrong information. "
-			"The number you entered is too large or too small for become an ID number. Please try again.\n";
-			}
-		}
-		cin.clear(); //delete the wrong status
-		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-	}
-	cin.ignore();
+	editPrice("\nID: ", id, "ID");
 }
 
 void Employee::editName() {
-	cout << "\nName: ";
-	getline(cin, name);
+	editPrice("\nName: ", name, "Name");
 }
 
 void Employee::editBaseSalary() {
-	while (true) {
-		string input;
-		cout << "\nBase salary: ";
-		cin >> input;
-
-		try {
-			size_t onlyNumber;
-			double temp = stod(input, &onlyNumber);
-
-			if(onlyNumber != input.size()) {
-				throw invalid_argument("Contains invalid characters");
-			}
-			if (temp < 0) {
-				cout << "Input is less than 0. Base salary must be a positive number. Please try again.\n" << endl;
-			}
-			else {
-				baseSalary = temp;
-				break;
-			}
-		}
-		catch (invalid_argument&) {
-			cout << "Invalid input. Base salary must be a positive number. Please try again.\n" << endl;
-		}
-		catch (out_of_range&) {
-			cout << "You must have entered the wrong information"
-			<< ". No one has that much salary." << endl;
-		}
-		cin.clear(); //delete the wrong status
-		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-	}
-	cin.ignore();
+	editPrice("\nBase salary: ", baseSalary, "Base salary");
 }
 
 void Employee::editSalesCommission() {
-	while (true) {
-		string input;
-		cout << "\nSales commission: ";
-		cin >> input;
-
-		try {
-			size_t onlyNumber;
-			double temp = stod(input, &onlyNumber);
-
-			if(onlyNumber != input.size()) {
-				throw invalid_argument("Contains invalid characters");
-			}
-			if (temp < 0) {
-				cout << "Input is less than 0. Sales commission must be a positive number. Please try again.\n" << endl;
-			}
-			else {
-				salesCommission = temp;
-				break;
-			}
-		}
-		catch (invalid_argument&) {
-			cout << "Invalid input. Sales commission must be a positive number. Please try again.\n" << endl;
-		}
-		catch (out_of_range&) {
-			cout << "You must have entered the wrong information"
-			<< ". No one has that much sales commission." << endl;
-		}
-		cin.clear(); //delete the wrong status
-		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-	}
-	cin.ignore();
+	editPrice("\nSales commission: ", salesCommission, "Sales Commission");
 }
 
 void Employee::editInfoButNotID() {

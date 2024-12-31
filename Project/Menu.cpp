@@ -3,12 +3,13 @@
 //
 
 #include "Menu.h"
+#include "FuntionToEditInformation.h"
 #include <iostream>
-#include <iomanip>
 #include <sstream>
 #include <algorithm> // to use "transform" to change string input in function "askYesNO" to capital letters
 #include <cctype> // to "toupper" to change string input in function "askYesNO" to capital letters
 
+//Including some functions that are shared by main as well as some other classes.
 using namespace std;
 
 void Menu() {
@@ -35,49 +36,7 @@ void Menu() {
 
 int checkInputDataInt() {
 	int id= -1;
-	while (true) {
-		string input;
-		cin >> input;
-		bool isNumeric = true;
-
-		for (char cha : input) {
-			if (!isdigit(cha)) {
-				isNumeric = false;
-				break;
-			}
-		}
-		if(!isNumeric) {
-			cout << "Invalid input. It must be a number. Please try again.\n" << endl;
-		}
-		else {
-			try {
-				long long temp = stoll (input);
-
-				// check if input is within the range of int
-				if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
-					throw out_of_range("Number out of range for int type.");
-				}
-
-				else {
-					id = static_cast<int>(temp);
-				}
-
-				if (id < 0) {
-					cout << "Invalid input. It must be a positive number. Please try again.\n";
-				} else {
-					break;
-				}
-			} catch (invalid_argument&) {
-				cout << "Invalid input. It must be a valid number. Please try again.\n";
-			} catch (out_of_range&) {
-				cout << "You must have entered the wrong information. "
-			"The number you entered is too large or too small. Please try again.\n";
-			}
-		}
-		cin.clear(); //delete the wrong status
-		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-	}
-	cin.ignore();
+	editPrice("\nPlease enter a valid number: ", id, "It");
 	return id;
 }
 
@@ -89,11 +48,11 @@ bool askYesNo(const string &question) {
 		transform(input.begin(), input.end(), input.begin(), ::toupper);
 		if (input == "YES") {
 			return true;
-		} else if (input == "NO") {
-			return false;
-		} else {
-			cout << "Invalid input! Please enter 'yes' or 'no'." << endl;
 		}
+		if (input == "NO") {
+			return false;
+		}
+		cout << "Invalid input! Please enter 'yes' or 'no'." << endl;
 	}
 }
 

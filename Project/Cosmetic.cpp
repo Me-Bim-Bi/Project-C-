@@ -4,6 +4,7 @@
 
 #include "Cosmetic.h"
 #include "Product.h"
+#include"FuntionToEditInformation.h"
 #include <iostream>
 
 using namespace std;
@@ -21,15 +22,8 @@ string Cosmetic::getType() const {
 	return this->type;
 }
 
-bool Cosmetic::operator==(const Product &other) const {
-	const Cosmetic* otherClothing = dynamic_cast<const Cosmetic*>(&other);
-	return otherClothing && Product::operator==(*otherClothing) &&
-		type == otherClothing->type;
-}
-
 void Cosmetic::editType() {
-	cout << "\nType: ";
-	getline(cin, type);
+	editPrice("\nType: ", type, "Type");
 }
 
 void Cosmetic::editInfoButNotID() {

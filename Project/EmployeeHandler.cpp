@@ -4,6 +4,7 @@
 
 #include "EmployeeHandler.h"
 #include "ProductHandler.h"
+#include "FuntionToEditInformation.h"
 #include "Menu.h"
 #include <iostream>
 #include <fstream>
@@ -69,60 +70,20 @@ EmployeeHandler& EmployeeHandler::operator=(const EmployeeHandler &other) {
 
 void EmployeeHandler::addEmployee() {
 	int id = -1;
-	while (true) {
-		string input;
-		cout << "\nID: ";
-		cin >> input;
-		bool isNumeric = true;
-
-		for (char cha : input) {
-			if (!isdigit(cha)) {
-				isNumeric = false;
-				break;
-			}
-		}
-		if(!isNumeric) {
-			cout << "Invalid input. ID must be a number. Please try again.\n" << endl;
-		}
-		else {
-			try {
-				long long temp = stoll (input);
-				// check if input is within the range of int
-				if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
-					throw out_of_range("Number out of range for int type.");
-				}
-				else {
-					id = static_cast<int>(temp);
-				}
-				if (id < 0) {
-					cout << "Invalid input. ID must be a positive number. Please try again.\n";
-				} else {
-					break;
-				}
-			} catch (invalid_argument&) {
-				cout << "Invalid input. ID must be a valid number. Please try again.\n";
-			} catch (out_of_range&) {
-				cout << "You must have entered the wrong information. "
-			"The number you entered is too large or too small for become an ID number. Please try again.\n";
-			}
-		}
-		cin.clear(); //delete the wrong status
-		cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-	}
-	cin.ignore();
+	editPrice("\nID: ", id, "ID");
 	if(findIdIndex(id) == -1) {
-		double salesCommission = 0.0f;
-		double baseSalary = 0.0;
-		string name;
 		if(nrOfCurrent == capacity) {
 			expand();
 		}
+		double salesCommission = 0.0f;
+		double baseSalary = 0.0;
+		string name = "?";
 		employees[this->nrOfCurrent] = new Employee(id, name, baseSalary, salesCommission);
 		employees[this->nrOfCurrent]->editInfoButNotID();
 		nrOfCurrent++;
 	}
 	else {
-		cout << "The employee has id number: " << id << " has been already exist in the system. "
+		cerr << "The employee has id number: " << id << " has been already exist in the system. "
 		  "\nYou can not add an employee twice to the system. Please check it again!" << endl;
 	}
 }
@@ -131,48 +92,7 @@ void EmployeeHandler::editIdEmployee (int id) const {
 	if (int index = findIdIndex(id); index != -1) {
 		if (askYesNo("Do you want to edit the id of this employee? ")) {
 			int newID = 0;
-			while (true) {
-				string input;
-				cout << "\nNew ID: ";
-				cin >> input;
-				bool isNumeric = true;
-
-				for (char cha : input) {
-					if (!isdigit(cha)) {
-						isNumeric = false;
-						break;
-					}
-				}
-				if(!isNumeric) {
-					cerr << "Invalid input. ID must be a number. Please try again.\n" << endl;
-				}
-				else {
-					try {
-						long long temp = stoll (input);
-						// check if input is within the range of int
-						if (temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
-							throw out_of_range("Number out of range for int type.");
-						}
-						else {
-							newID = static_cast<int>(temp);
-						}
-
-						if (newID <= 0) {
-							cerr << "Invalid input. ID must be a positive number. Please try again.\n";
-						} else {
-							break;
-						}
-					} catch (invalid_argument&) {
-						cerr << "Invalid input. ID must be a valid number. Please try again.\n";
-					} catch (out_of_range&) {
-						cerr << "You must have entered the wrong information. "
-					"The number you entered is too large or too small for become an ID number. Please try again.\n";
-					}
-				}
-				cin.clear(); //delete the wrong status
-				cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-			}
-			cin.ignore();
+			editPrice("\nNew ID: ", newID, "New ID");
 			if (findIdIndex(newID) != -1) {
 				cerr << "Error! The new ID you entered already exists. The id changed failed." << endl;
 			}

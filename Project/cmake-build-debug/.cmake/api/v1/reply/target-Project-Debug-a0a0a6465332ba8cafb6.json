@@ -105,7 +105,8 @@
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				9
+				9,
+				10
 			]
 		}
 	],
@@ -168,6 +169,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "Management.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "FuntionToEditInformation.h",
 			"sourceGroupIndex" : 1
 		}
 	],

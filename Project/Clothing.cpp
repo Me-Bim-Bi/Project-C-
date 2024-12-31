@@ -4,6 +4,7 @@
 
 #include "Clothing.h"
 #include"Product.h"
+#include"FuntionToEditInformation.h"
 #include <iostream>
 
 using namespace std;
@@ -24,26 +25,17 @@ string Clothing::getColour() const {
 }
 
 void Clothing::editSize() {
-	cout << "\nSize: ";
-	getline(cin, size);
+	editPrice("\nSize: ", size, "Size");
 }
 
 void Clothing::editColour() {
-	cout << "\nColour: ";
-	getline(cin, colour);
+	editPrice("\nColour: ", colour, "Colour");
 }
 
 void Clothing::editInfoButNotID() {
 	Product::editInfoButNotID();
 	editSize();
 	editColour();
-}
-
-bool Clothing::operator==(const Product &other) const {
-	const Clothing* otherClothing = dynamic_cast<const Clothing*>(&other);
-	return otherClothing && Product::operator==(*otherClothing) &&
-		size == otherClothing->size &&
-			colour == otherClothing->colour;
 }
 
 string Clothing::showInfo() const {

@@ -19,6 +19,7 @@ public:
 	ProductHandler& operator=(const ProductHandler& other);
 
 	void importProduct(Product* product);
+	void importProductFromFile(const Product* product);
 	void findAndShowProduct(int id) const;
 	void removeProduct(int id);
 	void editProductId(int id) const;

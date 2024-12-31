@@ -8,7 +8,6 @@
 #include "Product.h"
 #include "Clothing.h"
 #include "Cosmetic.h"
-#include "Employee.h"
 #include "EmployeeHandler.h"
 #include "ProductHandler.h"
 #include "Management.h"
@@ -59,7 +58,6 @@ int main() {
 			else if (answer == 1){
 				auto* clothing = new Clothing;
 				clothing->editId();
-				clothing->editInfoButNotID();
 				productHanderVector.importProduct(clothing);
 				delete clothing;
 				productHanderVector.showInfo();

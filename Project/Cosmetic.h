@@ -6,7 +6,6 @@
 #define COSMETIC_H
 #include "Product.h"
 
-
 class Cosmetic : public Product {
 private:
 	string type;
@@ -16,8 +15,6 @@ public:
 	~Cosmetic() override;
 
 	string getType() const;
-
-	bool operator ==(const Product& other) const override;
 
 	void editType();
 	void editInfoButNotID() override;

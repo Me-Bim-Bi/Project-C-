@@ -44,8 +44,6 @@ public:
 	void editQuantityImported();
 	virtual void editInfoButNotID() = 0;
 
-	virtual bool operator ==(const Product& other) const = 0;
-
 	double totalCostOfGoods() const;
 	double totalRevenue() const;
 	int endOfDayInventory() const;

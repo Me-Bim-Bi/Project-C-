@@ -7,6 +7,8 @@
 #include "Cosmetic.h"
 #include "EmployeeHandler.h"
 #include "Menu.h"
+#include "Product.h"
+#include "FuntionToEditInformation.h"
 
 #include <vector>
 #include <iostream>
@@ -56,7 +58,28 @@ ProductHandler& ProductHandler::operator=(const ProductHandler &other) {
 	return *this;
 }
 
-void ProductHandler::importProduct(Product* product) {
+void ProductHandler::importProduct(Product *product) {
+	const int idProduct = product->getID();
+	if(int index = findIndexProduct(idProduct); index != -1) {
+		if(askYesNo("The product ID already exists in the system. "
+			  "Would you like to import additional quantities of this product?")) {
+			int WantToImport;
+			editPrice("\nQuantity imported: ", WantToImport, "Quantity imported");
+			int quantityAfterImport = products[index]->getQuantityImported() + WantToImport;
+			products[index]->setQuantityImported(quantityAfterImport);
+			  }
+		else {
+			cout << "The product with id: " << idProduct << " has not been updated." << endl;
+		}
+	}
+	else {
+		product->editInfoButNotID();
+		products.push_back(product->clone());
+	}
+}
+
+
+void ProductHandler::importProductFromFile(const Product* product) {
 	const int idProduct = product->getID();
 	//check if the product exists in system => only add the quantityPurchase
 	if(int index = findIndexProduct(idProduct); index != -1) {
@@ -66,10 +89,8 @@ void ProductHandler::importProduct(Product* product) {
 		}
 		else
 		{
-			cout << "The product's id exist in system but the other information do not match. "
-		   "Please check again!" << endl
-			<< "Here is the information of product in the system now: " << endl
-			<< products[index]->showInfo();
+			cerr << "The product's id exist in system but the other information do not match. "
+		   "So we could not add them to the stock. Skipping..." << endl;
 		}
 	}
 	else {
@@ -84,7 +105,7 @@ void ProductHandler::findAndShowProduct(const int id) const {
 		<< products[index]->showInfo() << endl;
 	}
 	else{
-		cout << "Product with ID: " << id << " was not found!";
+		cerr << "Product with ID: " << id << " was not found!";
 	}
 }
 
@@ -101,7 +122,7 @@ void ProductHandler::removeProduct(const int id) {
 		}
 	}
 	else {
-		cout << "Product with ID: " << id << " was not found." << endl;
+		cerr << "Product with ID: " << id << " was not found." << endl;
 	}
 }
 
@@ -109,48 +130,9 @@ void ProductHandler::editProductId(int id) const {
 	if (int index = findIndexProduct(id); index != -1) {
 		if (askYesNo("Do you want to edit the id of this product? ")) {
 			int newID;
-			while (true) {
-				string input;
-				cout << "\nNew ID: ";
-				cin >> input;
-				bool isNumeric = true;
-				for (char cha : input) {
-					if (!isdigit(cha)) {
-						isNumeric = false;
-						break;
-					}
-				}
-				if(!isNumeric) {
-					cout << "Invalid input. ID must be a number. Please try again.\n" << endl;
-				}
-				else {
-					try {
-						// check if input is within the range of int
-						if (long long temp = stoll (input); temp < numeric_limits<int>::min() || temp > numeric_limits<int>::max()) {
-							throw out_of_range("Number out of range for int type.");
-						}
-						else {
-							newID = static_cast<int>(temp);
-						}
-
-						if (newID <= 0) {
-							cout << "Invalid input. ID must be a positive number. Please try again.\n";
-						} else {
-							break;
-						}
-					} catch (invalid_argument&) {
-						cout << "Invalid input. ID must be a valid number. Please try again.\n";
-					} catch (out_of_range&) {
-						cout << "You must have entered the wrong information. "
-					"The number you entered is too large or too small for become an ID number. Please try again.\n";
-					}
-				}
-				cin.clear(); //delete the wrong status
-				cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignore the wrong input data
-			}
-			cin.ignore();
+			editPrice("\nNew ID: ", newID, "New ID");
 			if (findIndexProduct(newID) != -1) {
-				cout << "Error! The new ID you entered already exists. The id changed failed." << endl;
+				cerr << "Error! The new ID you entered already exists. The id changed failed." << endl;
 			}
 			else {
 				products[index]->setID(newID);
@@ -162,13 +144,12 @@ void ProductHandler::editProductId(int id) const {
 		}
 	}
 	else {
-		cout << "Product with ID: " << id << " was not found!";
+		cerr << "Product with ID: " << id << " was not found!";
 	}
 }
 
 void ProductHandler::editProduct(const int id) const {
-	int index = findIndexProduct(id);
-	if (index != -1) {
+	if (int index = findIndexProduct(id); index != -1) {
 		cout << "The product with the id number " << id << " have got following information: " << endl
 		<< products[index]->showInfo() << endl;
 		if (askYesNo("Is it the product that you want to edit? ")) {
@@ -194,30 +175,30 @@ void ProductHandler::editProduct(const int id) const {
 
 void ProductHandler::sellProduct(EmployeeHandler& emp) const {
 	int checkProductID = -1, checkEmployeeID = -1, quantitySale = -1, index = -1;
-
+	//check if the product id exists
 	while(true) {
 		cout << "\nProduct ID: ";
 		checkProductID = checkInputDataInt();
 		index = findIndexProduct(checkProductID);
 		if(index == -1) {
 			cerr << "The product id: " << checkProductID << " does not exist. Please try again!" << endl;
-			continue;
 		}
 		else {
 			break;
 		}
 	}
+	//check if the employee id exists
 	while(true) {
 		cout << "\nEmployee ID: ";
 		checkEmployeeID = checkInputDataInt();
 		if(emp.callFindIdIndex(checkEmployeeID) == -1) {
 			cerr << "The employee id: " << checkEmployeeID << " does not exist. Please try again!" << endl;
-			continue;
 		}
 		else {
 			break;
 		}
 	}
+	//check if the goods in stock are enough to sell
 	while(true) {
 		cout << "\nQuantity sold: ";
 		quantitySale = checkInputDataInt();
@@ -229,10 +210,7 @@ void ProductHandler::sellProduct(EmployeeHandler& emp) const {
 			emp.addCommission(checkEmployeeID,employeeCommission);
 			break;
 		}
-		else {
-			cerr << "The product " << checkProductID << " is out of stock. Please try again!" << endl;
-			continue;
-		}
+		cerr << "The product " << checkProductID << " is out of stock. Please try again!" << endl;
 	}
 }
 
@@ -261,9 +239,6 @@ void ProductHandler::showInfo() const {
 	}
 }
 
-
-
-
 void ProductHandler::loadProductsFromFie(const string &fileName) {
 	ifstream in(fileName);
 	if(!in.is_open()) {
@@ -280,11 +255,11 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 			vector <string> productInformation;    //create a vector to check the input data
 			string aProduct;
 
-			while(getline(input,aProduct,',')) {  //add input data to vector
+			while(getline(input,aProduct,',')) {  //add input data to vector to check the data
 				productInformation.push_back(aProduct);
 			}
 
-			if(productInformation.size() < 9) {
+			if(productInformation.size() < 9) { //show the error message if the input data has not enough
 				cerr << "Error on line: " << lineNumber <<". Unknown product format. Skipping..." << endl;
 				continue;
 			}
@@ -327,7 +302,7 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 					cerr << "Error on line: " << lineNumber << ". Unknown product type. Skipping..." << endl;
 					continue;
 				}
-				importProduct(product.get()); //add product - raw pointer
+				importProductFromFile(product.get()); //add product - raw pointer
 			}
 			catch (exception& ){
 				cerr << "Error in line: " << lineNumber << ". Invalid data. Skipping..." << endl;

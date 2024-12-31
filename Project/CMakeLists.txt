@@ -13,4 +13,5 @@ add_executable(Project main.cpp
         Product.cpp
         ProductHandler.cpp
         Management.h
+        FuntionToEditInformation.h
 )
