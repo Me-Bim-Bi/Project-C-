@@ -38,6 +38,13 @@ void Clothing::editInfoButNotID() {
 	editColour();
 }
 
+bool Clothing::operator==(const Product &other) const {
+	const auto* otherClothing = dynamic_cast<const Clothing*>(&other);
+	return otherClothing && Product::operator==(*otherClothing) &&
+		size == otherClothing->size &&
+			colour == otherClothing->colour;
+}
+
 string Clothing::showInfo() const {
 	return "Clothing: " + Product::showInfo() + ", size: " + size + ", colour " + colour;
 }

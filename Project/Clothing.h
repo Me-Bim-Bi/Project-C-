@@ -23,6 +23,8 @@ public:
 	void editColour();
 	void editInfoButNotID() override;
 
+	bool operator==(const Product &other) const override;
+
 	string showInfo() const override;
 
 	Product* clone() const override;

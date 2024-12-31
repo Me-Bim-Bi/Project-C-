@@ -31,6 +31,12 @@ void Cosmetic::editInfoButNotID() {
 	editType();
 }
 
+bool Cosmetic::operator==(const Product &other) const {
+	const auto* otherClothing = dynamic_cast<const Cosmetic*>(&other);
+	return otherClothing && Product::operator==(*otherClothing) &&
+		type == otherClothing->type;
+}
+
 string Cosmetic::showInfo() const {
 	return "Cosmetic: " + Product::showInfo() + ", type: " + type;
 }

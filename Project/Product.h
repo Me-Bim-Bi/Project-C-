@@ -35,6 +35,8 @@ public:
 	void setQuantitySold(int quantitySold);
 	void setQuantityImported(int quantityImported);
 
+	virtual bool operator==(const Product& other) const;
+
 	void editId();
 	void editName();
 	void editPurchasePrice();

@@ -57,6 +57,16 @@ void Product::setQuantityImported(int quantityImported) {
 	this->quantityImported = quantityImported;
 }
 
+bool Product::operator==(const Product &other) const {
+	return id == other.id &&
+		name == other.name &&
+			purchasePrice == other.purchasePrice &&
+				sellingPrice == other.sellingPrice &&
+					quantityBeginningInventory == other.quantityBeginningInventory &&
+						quantitySold == other.quantitySold;
+}
+
+
 void Product::editId() {
 	editPrice("\nID: ", id, "ID");
 }
