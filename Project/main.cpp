@@ -1,7 +1,6 @@
 //
 // Created by Chu Ha Thanh on 2024-12-15.
 //
-#include <cmath>
 #include <iostream>
 #include <string>
 #include "EmployeeHandler.h"
