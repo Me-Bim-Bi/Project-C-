@@ -15,14 +15,15 @@ void editPrice(const string& textToInput, T& value, const string& valueType) {
 	while (true) {
 		string input;
 		cout << textToInput;
-		cin >> input;
+
+		getline(cin,input);
 
 		try {
 	        size_t onlyNumber;
 	        T temp;
 
 	        if constexpr (is_same<T, string>::value) {
-	            // Assign direct if it is string
+	            //Assign direct if it is string
 	            temp = input;
 	        }
 	        else if constexpr (is_same_v<T, int>) {
@@ -37,7 +38,7 @@ void editPrice(const string& textToInput, T& value, const string& valueType) {
 	            //convert to int if the data type is ok. Continue check if the value is less than 0
 	            temp = static_cast<int>(tempLong);
 	            if (temp < 0) {
-	                cerr << valueType << " must be a positive number. Please try again.\n" << endl;
+	                cout << valueType << " must be a positive number. Please try again!\n" << endl;
 	                continue;
 	            }
 	        }
@@ -48,7 +49,7 @@ void editPrice(const string& textToInput, T& value, const string& valueType) {
 	                throw invalid_argument("Contains invalid characters");
 	            }
 	            if (temp < 0) {
-	                cerr << valueType << " must be a positive number. Please try again.\n" << endl;
+	                cout << valueType << " must be a positive number. Please try again.\n" << endl;
 	                continue;
 	            }
 	        }
@@ -59,7 +60,7 @@ void editPrice(const string& textToInput, T& value, const string& valueType) {
 	                throw invalid_argument("Contains invalid characters");
 	            }
 	            if (temp < 0) {
-	                cerr << valueType << " must be a positive number. Please try again.\n" << endl;
+	                cout << valueType << " must be a positive number. Please try again.\n" << endl;
 	                continue;
 	            }
 	        }
@@ -68,16 +69,13 @@ void editPrice(const string& textToInput, T& value, const string& valueType) {
 	        break;
 		}
 		catch (const invalid_argument&) {
-			cerr << "Invalid input. " << valueType << " must be valid. Please try again.\n" << endl;
+			cout << "Invalid input. " << valueType << " must be valid. Please try again.\n" << endl;
 		}
 		catch (const out_of_range&) {
-			cerr << "You must have entered the wrong information. "
-			"It's too large amount. Please try agarin!" << endl;
+			cout << "You must have entered the wrong information. "
+			"It's too large amount. Please try again!" << endl;
 		}
-		cin.clear();  // Clear the error state
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Ignore invalid input
 	}
-	cin.ignore();
 };
 
 #endif

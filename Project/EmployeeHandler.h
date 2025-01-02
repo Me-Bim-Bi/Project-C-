@@ -23,6 +23,8 @@ public:
 	EmployeeHandler(const EmployeeHandler& other);
 	EmployeeHandler& operator=(const EmployeeHandler& other);
 
+	int getNrOfCurrent() const;
+
 	void addEmployee();
 	void editIdEmployee(int id) const;
 	void editEmployee(int id) const;
@@ -33,6 +35,10 @@ public:
 	int callFindIdIndex(int id) const;
 
 	double totalSalary() const;
+
+	// Hàm so sánh nhân viên: so sánh tất cả các từ trong tên, nếu tên giống nhau thì so sánh id giảm dần
+	static bool compareEmployees(Employee* emp1, Employee* emp2);
+	void sortEmployees() const;
 	void showInfo() const;
 
 	void loadEmployeesFromFie(const string& fileName);

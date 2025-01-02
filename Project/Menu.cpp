@@ -1,9 +1,13 @@
 //
 // Created by Chu Ha Thanh on 2024-12-17.
 //
-
 #include "Menu.h"
 #include "FuntionToEditInformation.h"
+#include "Management.h"
+#include "Clothing.h"
+#include "Cosmetic.h"
+#include "EmployeeHandler.h"
+#include "ProductHandler.h"
 #include <iostream>
 #include <sstream>
 #include <algorithm> // to use "transform" to change string input in function "askYesNO" to capital letters
@@ -36,7 +40,7 @@ void Menu() {
 
 int checkInputDataInt() {
 	int id= -1;
-	editPrice("\nPlease enter a valid number: ", id, "It");
+	editPrice("\nPlease enter a number: ", id, "It");
 	return id;
 }
 
@@ -52,8 +56,132 @@ bool askYesNo(const string &question) {
 		if (input == "NO") {
 			return false;
 		}
-		cout << "Invalid input! Please enter 'yes' or 'no'." << endl;
+		cerr << "Invalid input! Please enter 'yes' or 'no'." << endl;
 	}
 }
 
+int checkMenuChoice() {
+	int answer = 0;
+	while (true) {
+		try {
+			editPrice("Menu choice: ",  answer,"Menu choice");
+			// check if menu choice is in range 1-19
+			if (answer < 1 || answer > 19) {
+				throw invalid_argument("The input data is out of range! ");
+			}
+			break;
 
+		} catch (const invalid_argument& e) {
+			cerr << "Error: " << e.what() << " Please select from 1 to 19!" << endl<< endl;
+		}
+	}
+	return answer;
+}
+
+void getMenuChoice(int answer, ProductHandler& productHandlerVector, EmployeeHandler& employeeHandlerPointers) {
+	if (answer == 1){
+		auto* clothing = new Clothing;
+		clothing->editId();
+		productHandlerVector.importProduct(clothing);
+		delete clothing;
+	}
+	else if (answer == 2) {
+		auto* cosmetic = new Cosmetic;
+		cosmetic->editId();
+		productHandlerVector.importProduct(cosmetic);
+	}
+	else if (answer == 3) {
+		cout << "Insert the product id you want to find: ";
+		int checkId = checkInputDataInt();
+		productHandlerVector.findAndShowProduct(checkId);
+	}
+	else if (answer == 4) {
+		cout << "Insert the product id you want to remove: ";
+		int checkId = checkInputDataInt();
+		productHandlerVector.removeProduct(checkId);
+	}
+	else if (answer == 5) {
+		cout << "Insert the product id you want to edit: ";
+		int checkId = checkInputDataInt();
+		productHandlerVector.editProductId(checkId);
+	}
+	else if (answer == 6) {
+		cout << "Insert the product id you want to edit: ";
+		int checkId = checkInputDataInt();
+		productHandlerVector.editProduct(checkId);
+	}
+	else if (answer == 7) {
+		cout << "Insert following information to sale a product: ";
+		productHandlerVector.sellProduct(employeeHandlerPointers);
+	}
+	else if (answer == 8) {
+		productHandlerVector.sortProducts();
+		productHandlerVector.showInfo();
+	}
+	else if (answer == 9) {
+		productHandlerVector.sortProducts();
+		productHandlerVector.saveProductsToFile("All products");
+	}
+	else if (answer == 10) {
+		employeeHandlerPointers.addEmployee();
+	}
+	else if (answer == 11) {
+		cout << "Insert the id of the employee that you want to find: ";
+		int checkId = checkInputDataInt();
+		employeeHandlerPointers.findEmployeeAndShowInfo(checkId);
+	}
+	else if (answer == 12) {
+		cout << "Insert the id of the employee that you want to remove information: ";
+		int checkId = checkInputDataInt();
+		employeeHandlerPointers.removeEmployee(checkId);
+	}
+	else if (answer == 13) {
+		cout << "Insert the id of the employee that you want to to edit id information: ";
+		int checkId = checkInputDataInt();
+		employeeHandlerPointers.editIdEmployee(checkId);
+	}
+	else if (answer == 14) {
+		cout << "Insert the id of the employee that you want to to edit information ";
+		int checkId = checkInputDataInt();
+		employeeHandlerPointers.editEmployee(checkId);
+	}
+	else if (answer == 15) {
+		employeeHandlerPointers.sortEmployees();
+		employeeHandlerPointers.showInfo();
+	}
+	else if (answer == 16) {
+		employeeHandlerPointers.sortEmployees();
+		employeeHandlerPointers.saveEmployeesToFile("All employees");
+	}
+	else if (answer == 17) {
+		Management management(productHandlerVector,employeeHandlerPointers);
+		management.showInfo();;
+	}
+	else {
+		Management management(productHandlerVector,employeeHandlerPointers);
+		management.saveToFile("Statement");
+	}
+}
+
+int validateAndConvertToInt(const string &str, const string &errorMessage) {
+	if (str.find_first_not_of("0123456789") != string::npos) {
+		throw invalid_argument(errorMessage);
+	}
+	return stoi(str);
+}
+
+float validateAndConvertToFloat(const string &str, const string &errorMessage) {
+	try {
+		return stof(str);
+	} catch (const exception&) {
+		throw invalid_argument(errorMessage);
+	}
+}
+
+double validateAndConvertToDouble(const string &str, const string &errorMessage) {
+	try {
+		return stod(str);
+	} catch (const exception&) {
+		throw invalid_argument(errorMessage);
+	}
+}

@@ -7,8 +7,10 @@
 #include <string>
 #include <iomanip>
 #include <sstream>
+#include <vector>
 
-Employee::Employee(int id, string name, double baseSalary, double salesCommission):id(id), baseSalary(baseSalary), name(name),salesCommission(salesCommission) {
+Employee::Employee(int id, string name, double baseSalary, double salesCommission):
+id(id), baseSalary(baseSalary), name(name),salesCommission(salesCommission) {
 }
 
 Employee::~Employee() {
@@ -66,7 +68,7 @@ void Employee::editInfoButNotID() {
 
 string Employee::showInfo() const {
 	ostringstream stringInfo;
-	stringInfo << fixed << setprecision(0);
+	stringInfo << fixed << setprecision(2);
 	stringInfo << "ID: " << id
 	<< ", name: " << name
 	<< ", base salary: " << baseSalary
@@ -74,4 +76,3 @@ string Employee::showInfo() const {
 	<< ", total income: " << totalIncome();
 	return stringInfo.str();
 }
-

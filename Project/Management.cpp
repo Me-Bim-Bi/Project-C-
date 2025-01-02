@@ -10,26 +10,13 @@
 
 using namespace std;
 
-void Management::totalRevenue(const ProductHandler &pro) {
+Management::Management(const ProductHandler &pro, const EmployeeHandler &emp) {
 	this->revenue = pro.totalRevenue();
-}
-
-void Management::totalCost(const ProductHandler &pro, const EmployeeHandler &emp) {
 	this->cost = pro.totalCostOfProducts() + emp.totalSalary();
-}
-
-void Management::finalProfit() {
 	this->profit = this->revenue - this->cost;
 }
 
-Management::Management(const ProductHandler &pro, const EmployeeHandler &emp) {
-	totalRevenue(pro);
-	totalCost(pro, emp);
-	finalProfit();
-}
-
-Management::~Management() {
-}
+Management::~Management() = default;
 
 void Management::showInfo() const {
 	cout << "Total cost: " << cost << endl

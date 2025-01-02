@@ -108,7 +108,7 @@ void Product::editInfoButNotID(){
 		if(quantityInStock >= 0) {
 			break;
 		}
-		cerr << "The quantity of goods sold is incorrect. "
+		cout << "The quantity of goods sold is incorrect. "
 		"There is not enough stock to sell that much. "
 		"Please try again!" << endl;
 	}

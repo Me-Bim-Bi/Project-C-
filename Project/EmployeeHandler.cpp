@@ -68,6 +68,10 @@ EmployeeHandler& EmployeeHandler::operator=(const EmployeeHandler &other) {
 	return *this;
 }
 
+int EmployeeHandler::getNrOfCurrent() const {
+	return this->nrOfCurrent;
+}
+
 void EmployeeHandler::addEmployee() {
 	int id = -1;
 	editPrice("\nID: ", id, "ID");
@@ -83,7 +87,7 @@ void EmployeeHandler::addEmployee() {
 		nrOfCurrent++;
 	}
 	else {
-		cerr << "The employee has id number: " << id << " has been already exist in the system. "
+		cout << "The employee has id number: " << id << " has been already exist in the system. "
 		  "\nYou can not add an employee twice to the system. Please check it again!" << endl;
 	}
 }
@@ -92,6 +96,7 @@ void EmployeeHandler::editIdEmployee (int id) const {
 	if (int index = findIdIndex(id); index != -1) {
 		if (askYesNo("Do you want to edit the id of this employee? ")) {
 			int newID = 0;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			editPrice("\nNew ID: ", newID, "New ID");
 			if (findIdIndex(newID) != -1) {
 				cerr << "Error! The new ID you entered already exists. The id changed failed." << endl;
@@ -102,6 +107,7 @@ void EmployeeHandler::editIdEmployee (int id) const {
 			}
 		}
 		else{
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			cout << "The employee's id has not been edited." << endl;
 		}
 	}
@@ -115,17 +121,21 @@ void EmployeeHandler::editEmployee(int id) const {
 		cout << "The employee with the id number " << id << " have got following information: " << endl
 		<< employees[index]->showInfo() << endl;
 		if (askYesNo("Is it the employee that you want to edit? ")) {
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			editIdEmployee(id);
 			if (askYesNo("Do you want change the another information of this employee? ")) {
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				employees[index]->editInfoButNotID();
 				cout << "The employee's information has been edited." << endl;
 			}
 			else {
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				cout << "The another information of this employee has not been edited." << endl;
 			}
 		}
 		else{
 			cout << "The employee's information has not been edited." << endl;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
 	}
 	else {
@@ -138,6 +148,7 @@ void EmployeeHandler::removeEmployee(int id) {
 		cout << "The employee with the id " << id << " have got the following information: " << endl
 		<< employees[index]->showInfo() << endl;
 		if (askYesNo("Do you want to remove this employee? ")) {
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			delete employees[index];
 			nrOfCurrent--;
 			employees[index] = employees[nrOfCurrent];
@@ -145,11 +156,12 @@ void EmployeeHandler::removeEmployee(int id) {
 			cout << "The product has been deleted." << endl;
 		}
 		else {
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			cout << "The information of employee with id: " << id << " has not been removed" << endl;
 		}
 	}
 	else{
-		cerr << "Product with ID: " << id << " was not found!" << endl;
+		cerr << "The id " << id << " was not found!" << endl;
 	}
 }
 
@@ -175,7 +187,6 @@ void EmployeeHandler::addCommission(int id, double salesCommission) const {
 	}
 	else {
 		cerr << "Error: The ID " << id << " was not found." << endl;
-		return;
 	}
 }
 
@@ -190,6 +201,35 @@ double EmployeeHandler::totalSalary() const {
 	}
 	return total;
 }
+
+bool EmployeeHandler::compareEmployees(Employee *emp1, Employee *emp2) {
+	//Convert all names to lowercase for comparison
+	string nameEmp1 = emp1->getName();
+	string nameEmp2 = emp2->getName();
+	transform(nameEmp1.begin(), nameEmp1.end(), nameEmp1.begin(), ::tolower);
+	transform(nameEmp2.begin(), nameEmp2.end(), nameEmp2.begin(), ::tolower);
+
+	//Use string stream to split name into words
+	istringstream nameStream1(nameEmp1);
+	istringstream nameStream2(nameEmp2);
+
+	string word1, word2;
+	//Compare every word in name
+	while (nameStream1 >> word1 && nameStream2 >> word2) {
+		if (word1 != word2) {
+			return word1 < word2;  //compare if the words are different.w
+		}
+	}
+
+	//if all words are same then sort by ID in descending order
+	return (emp1->getId()) > (emp2->getId());
+}
+
+
+void EmployeeHandler::sortEmployees() const {
+	sort(employees, employees + nrOfCurrent, compareEmployees);
+}
+
 
 void EmployeeHandler::showInfo() const {
 	int count = 1;
@@ -218,16 +258,18 @@ void EmployeeHandler::loadEmployeesFromFie(const string &fileName) {
 				continue;
 			}
 			try {
-				int id = stoi(employeeInformation[0]);
-				string name = employeeInformation[1];
-				double baseSalary = stof(employeeInformation[2]);
-				double salesCommission = stof(employeeInformation[3]);
+				int id = validateAndConvertToInt(employeeInformation[0],
+					"ID must be an integer");
+				const string& name = employeeInformation[1];
+				double baseSalary = validateAndConvertToDouble(employeeInformation[2],
+					"Base salary must be a number");
+				double salesCommission = validateAndConvertToDouble(employeeInformation[3],
+					"Sales commission must be a number");
 
 				addEmployeeFromFile(id, name, baseSalary, salesCommission);
-
 			}
-			catch(exception&){
-				cerr << "Error in line: " << lineNumber << ". Invalid data. Skipping..." << endl;
+			catch (exception& e){
+				cerr << "Error in line: " << lineNumber << " in file " << fileName << ". " << e.what() << " .Skipping..." << endl;
 			}
 		}
 		in.close();
@@ -247,7 +289,7 @@ void EmployeeHandler::addEmployeeFromFile(int id, const string &name, double bas
 	}
 	else {
 		cerr << "The employee has id number: " << id << " has been already exist in the system. "
-		  "\nYou can not add an employee twice to the system. Skipping.." << endl;
+		  "\nYou can not add an employee twice to the system. " << endl;
 	}
 }
 

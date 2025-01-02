@@ -25,10 +25,11 @@ public:
 	void editProductId(int id) const;
 	void editProduct(int id) const;
 
-	void sellProduct(EmployeeHandler& emp) const;
+	void sellProduct(const EmployeeHandler& emp) const;
 	double totalCostOfProducts() const;
 	double totalRevenue() const;
 
+	void sortProducts();
 	void showInfo () const;
 
 	void loadProductsFromFie(const string& fileName);
