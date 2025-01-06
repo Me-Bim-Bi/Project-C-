@@ -32,8 +32,8 @@ int main() {
 
 	while(isWorking) {
 		Menu();
-
-		if(int answer = checkMenuChoice(); answer == 19) {
+		int answer = checkMenuChoice();
+		if(answer == 19) {
 			isWorking = false;
 		}
 		else {

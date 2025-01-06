@@ -15,6 +15,7 @@
 #include <fstream>
 #include <sstream>
 #include <typeinfo>
+#include <algorithm>
 
 using namespace std;
 
