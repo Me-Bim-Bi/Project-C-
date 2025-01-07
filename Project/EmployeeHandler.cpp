@@ -155,7 +155,7 @@ void EmployeeHandler::removeEmployee(int id) {
 			nrOfCurrent--;
 			employees[index] = employees[nrOfCurrent];
 			employees[nrOfCurrent] = nullptr;
-			cout << "The product has been deleted." << endl;
+			cout << "The information of employee with id " << id << " has been deleted." << endl;
 		}
 		else {
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
