@@ -205,7 +205,7 @@ double EmployeeHandler::totalSalary() const {
 }
 
 bool EmployeeHandler::compareEmployees(Employee *emp1, Employee *emp2) {
-	//Convert all names to lowercase for comparison
+	//get the names and convert all names to lowercase for comparison
 	string nameEmp1 = emp1->getName();
 	string nameEmp2 = emp2->getName();
 	transform(nameEmp1.begin(), nameEmp1.end(), nameEmp1.begin(), ::tolower);
@@ -219,7 +219,7 @@ bool EmployeeHandler::compareEmployees(Employee *emp1, Employee *emp2) {
 	//Compare every word in name
 	while (nameStream1 >> word1 && nameStream2 >> word2) {
 		if (word1 != word2) {
-			return word1 < word2;  //compare if the words are different.w
+			return word1 < word2;  //compare if the words are different
 		}
 	}
 
@@ -248,6 +248,8 @@ void EmployeeHandler::loadEmployeesFromFie(const string &fileName) {
 		while (getline(in, line)) {
 			++lineNumber;
 			istringstream input(line);
+
+			//create a vector to check the data easier, type check fields
 			vector <string> employeeInformation;
 			string anEmployee;
 
@@ -268,8 +270,10 @@ void EmployeeHandler::loadEmployeesFromFie(const string &fileName) {
 				double salesCommission = validateAndConvertToDouble(employeeInformation[3],
 					"Sales commission must be a number");
 
+				//add employee if the data is correct type
 				addEmployeeFromFile(id, name, baseSalary, salesCommission);
 			}
+			//show the error
 			catch (exception& e){
 				cerr << "Error in line: " << lineNumber << " in file " << fileName << ". " << e.what() << " .Skipping..." << endl;
 			}

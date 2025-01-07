@@ -16,7 +16,7 @@ private:
 	double salesCommission;
 
 public:
-	Employee(int id = 0, string name = "?", double baseSalary = 0.0f, double salesCommission = 0.0f);
+	Employee(int id = 0, const string& name = "?", double baseSalary = 0.0f, double salesCommission = 0.0f);
 	~Employee();
 
 	int getId() const;

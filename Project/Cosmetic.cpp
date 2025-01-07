@@ -15,8 +15,7 @@ Product(id, name, purchasePrice,sellingPrice, quantityBeginningInventory,
 	quantitySold, quantityImported), type(type){
 }
 
-Cosmetic::~Cosmetic() {
-}
+Cosmetic::~Cosmetic() = default;
 
 string Cosmetic::getType() const {
 	return this->type;

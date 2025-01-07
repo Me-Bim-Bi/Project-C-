@@ -9,12 +9,11 @@
 #include <sstream>
 #include <vector>
 
-Employee::Employee(int id, string name, double baseSalary, double salesCommission):
+Employee::Employee(int id, const string& name, double baseSalary, double salesCommission):
 id(id), baseSalary(baseSalary), name(name),salesCommission(salesCommission) {
 }
 
-Employee::~Employee() {
-}
+Employee::~Employee() = default;
 
 int Employee::getId() const {
 	return this->id;

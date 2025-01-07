@@ -72,6 +72,7 @@ void ProductHandler::importProduct(Product *product) {
 				editPrice("\nQuantity imported: ", WantToImport, "Quantity imported");
 				int quantityAfterImport = products[index]->getQuantityImported() + WantToImport;
 				products[index]->setQuantityImported(quantityAfterImport);
+				cout << "The product with id: " << idProduct << " has been imported into the warehouse." << endl;
 			  }
 			else {
 				cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -88,6 +89,7 @@ void ProductHandler::importProduct(Product *product) {
 	else {
 		product->editInfoButNotID();
 		products.push_back(product->clone());
+		cout << "The product with id: " << idProduct << " has been imported into the warehouse." << endl;
 	}
 }
 
@@ -95,7 +97,7 @@ void ProductHandler::importProduct(Product *product) {
 void ProductHandler::importProductFromFile(const Product* product) {
 	const int idProduct = product->getID();
 	//check if the product exists in system => only add the quantityPurchase
-	if(int index = findIndexProduct(idProduct); index != -1) {
+	if(const int index = findIndexProduct(idProduct); index != -1) {
 		if(*this->products[index] == *product) {
 			int quantityAfterImport = products[index]->getQuantityImported() + product->getQuantityImported();
 			products[index]->setQuantityImported(quantityAfterImport);
@@ -113,7 +115,7 @@ void ProductHandler::importProductFromFile(const Product* product) {
 }
 
 void ProductHandler::findAndShowProduct(const int id) const {
-	if (int index = findIndexProduct(id); index != -1)
+	if (const int index = findIndexProduct(id); index != -1)
 	{
 		cout << "The product with the id " << id << " have got the following information: " << endl
 		<< products[index]->showInfo() << endl;
@@ -124,7 +126,7 @@ void ProductHandler::findAndShowProduct(const int id) const {
 }
 
 void ProductHandler::removeProduct(const int id) {
-	if (int index = findIndexProduct(id); index != -1) {
+	if (const int index = findIndexProduct(id); index != -1) {
 		cout << "The product with the id " << id << " have got the following information: " << endl
 		<< products[index]->showInfo() << endl;
 		if (askYesNo("Do you want to remove this product? ")) {
@@ -143,7 +145,7 @@ void ProductHandler::removeProduct(const int id) {
 }
 
 void ProductHandler::editProductId(int id) const {
-	if (int index = findIndexProduct(id); index != -1) {
+	if (const int index = findIndexProduct(id); index != -1) {
 		if (askYesNo("Do you want to edit the id of this product? ")) {
 			int newID;
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -167,7 +169,7 @@ void ProductHandler::editProductId(int id) const {
 }
 
 void ProductHandler::editProduct(const int id) const {
-	if (int index = findIndexProduct(id); index != -1) {
+	if (const int index = findIndexProduct(id); index != -1) {
 		cout << "The product with the id number " << id << " have got following information: " << endl
 		<< products[index]->showInfo() << endl;
 		if (askYesNo("Is it the product that you want to edit? ")) {
@@ -195,7 +197,7 @@ void ProductHandler::editProduct(const int id) const {
 }
 
 void ProductHandler::sellProduct(const EmployeeHandler& emp) const {
-	int checkProductID = -1, checkEmployeeID = -1, quantitySale = -1, index = -1;
+	int checkProductID, checkEmployeeID, index;
 	//check if the product id exists
 	while(true) {
 		cout << "\nProduct ID: ";
@@ -222,7 +224,7 @@ void ProductHandler::sellProduct(const EmployeeHandler& emp) const {
 	//check if the goods in stock are enough to sell
 	while(true) {
 		cout << "\nQuantity sold: ";
-		quantitySale = checkInputDataInt();
+		int quantitySale = checkInputDataInt();
 		int quantity = products[index]->getQuantityBeginningInventory()+products[index]->getQuantityImported() - products[index]->getQuantitySold();
 		int totalQuantitySold = products[index]->getQuantitySold()+quantitySale;
 		if(quantitySale <= quantity) {

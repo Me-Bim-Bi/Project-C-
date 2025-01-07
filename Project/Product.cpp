@@ -14,8 +14,7 @@ sellingPrice(sellingPrice), quantityBeginningInventory(quantityBeginningInventor
 quantityImported(quantityImported){
 }
 
-Product::~Product() {
-}
+Product::~Product() = default;
 
 int Product::getID() const {
 	return this->id;
@@ -104,13 +103,13 @@ void Product::editInfoButNotID(){
 	editQuantityImported();
 	while(true) {
 		editQuantitySold();
-		int quantityInStock = endOfDayInventory();
-		if(quantityInStock >= 0) {
+		int quantityInStock = quantityBeginningInventory + quantityImported;
+		if(quantityInStock >= quantitySold) {
 			break;
 		}
 		cout << "The quantity of goods sold is incorrect. "
-		"There is not enough stock to sell that much. "
-		"Please try again!" << endl;
+		"We have only: " << quantityInStock << " products in stock."
+		" Please try again!" << endl;
 	}
 }
 
@@ -141,5 +140,3 @@ string Product::showInfo() const {
 	return stringInfo.str();
 }
 
-Product * Product::clone() const {
-}
