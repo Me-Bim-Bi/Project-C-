@@ -146,3 +146,23 @@ An toàn bộ nhớ: Với con trỏ thông minh, bạn không cần phải lo l
 Giảm thiểu lỗi: Việc sử dụng con trỏ thông minh giúp giảm thiểu các lỗi liên quan đến bộ nhớ như truy cập bộ nhớ không hợp lệ (dangling pointer) hoặc giải phóng bộ nhớ hai lần (double free).
 Kết luận:
 Nếu bạn sử dụng con trỏ thô trong hàm loadProductsFromFile, bạn sẽ phải quản lý bộ nhớ thủ công và có thể gặp phải nhiều vấn đề liên quan đến rò rỉ bộ nhớ, giải phóng bộ nhớ sai cách, hoặc truy cập bộ nhớ không hợp lệ. Sử dụng con trỏ thông minh như unique_ptr giúp giảm thiểu những rủi ro này và làm cho mã nguồn của bạn an toàn và dễ bảo trì hơn.
+
+# 6. Hàm clone() trong đoạn mã này có ý nghĩa là tạo một bản sao độc lập (deep copy) của đối tượng Cosmetic. Dưới đây là phân tích chi tiết:
+
+Ý nghĩa:
+Tạo bản sao động:
+
+Khi bạn gọi clone() trên một đối tượng Cosmetic, nó sẽ trả về một con trỏ (Product*) trỏ đến một đối tượng Cosmetic mới được tạo trên heap.
+Đối tượng mới này là một bản sao độc lập, chứa dữ liệu giống như đối tượng gốc nhưng tồn tại ở một vùng nhớ riêng.
+Đảm bảo tính đa hình:
+
+Hàm clone() trả về con trỏ kiểu Product*, cho phép tương thích với lớp cơ sở (Product).
+Điều này hữu ích trong các hệ thống sử dụng danh sách đối tượng động kiểu hỗn hợp (như std::vector<Product*>), nơi các đối tượng Clothing hoặc Cosmetic được lưu trữ dưới dạng con trỏ đến Product.
+Sử dụng cơ chế sao chép:
+
+Cú pháp new Cosmetic(*this) gọi constructor sao chép (copy constructor) của lớp Cosmetic để sao chép toàn bộ dữ liệu từ đối tượng gốc (*this) sang đối tượng mới.
+Lợi ích:
+Đảm bảo an toàn bộ nhớ:
+Khi sao chép một đối tượng, clone() tạo một đối tượng mới trên heap. Điều này đảm bảo rằng bản sao không phụ thuộc vào vùng nhớ của đối tượng gốc.
+Tính linh hoạt với đa hình:
+Bạn có thể gọi clone() từ bất kỳ đối tượng nào thuộc lớp con của Product, và đối tượng trả về sẽ có đúng kiểu của lớp con. Điều này là một phần quan trọng của mẫu thiết kế Prototype Pattern.

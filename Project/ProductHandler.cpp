@@ -9,7 +9,6 @@
 #include "Menu.h"
 #include "Product.h"
 #include "FuntionToEditInformation.h"
-
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -268,9 +267,12 @@ void ProductHandler::sortProducts() {
 		}
 		// Sorting the products by type (Clothing before Cosmetic) and by ID in descending order
 		sort(products.begin(), products.end(), [](Product* p1, Product* p2) {
-			// Check if the product type is valid (either Clothing or Cosmetic)
-				// this product format and id duplication check is mainly to anticipate and handle
-					//possible errors.
+			/* Check if the product type is valid (either Clothing or Cosmetic)
+			 * this product format and id duplication check is mainly to anticipate and handle
+			 * possible errors.
+			 * Using typeid is more suitable than dynamic_cast because we need only to check type for sorting
+			 * do not need for type casting or accessing specific members of the derived class
+			 * */
 			if (typeid(*p1) != typeid(Clothing) && typeid(*p1) != typeid(Cosmetic)) {
 				throw runtime_error("Invalid product type: " + string(typeid(*p1).name()));
 				// using string to convert typeid(*(p1).name from const. char* to string
@@ -323,7 +325,7 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 				productInformation.push_back(aProduct);
 			}
 
-			if(productInformation.size() < 9) { //show the error message if the input data has not enough
+			if(productInformation.size() < 9) { //show the error message if the input data has not enough fields (min 9)
 				cerr << "Error on line: " << lineNumber <<". Unknown product format. Skipping..." << endl;
 				continue;
 			}

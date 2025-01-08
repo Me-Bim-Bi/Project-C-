@@ -39,6 +39,8 @@ void Clothing::editInfoButNotID() {
 }
 
 bool Clothing::operator==(const Product &other) const {
+	//Check if two objects have the same value, considering specific details
+	//use for function importProductFromFile
 	const auto* otherClothing = dynamic_cast<const Clothing*>(&other);
 	return otherClothing && Product::operator==(*otherClothing) &&
 		size == otherClothing->size &&

@@ -57,6 +57,8 @@ void Product::setQuantityImported(int quantityImported) {
 }
 
 bool Product::operator==(const Product &other) const {
+	//Check if two objects have the same value, considering specific details
+	//use for function importProductFromFile
 	return id == other.id &&
 		name == other.name &&
 			purchasePrice == other.purchasePrice &&

@@ -63,6 +63,7 @@ bool askYesNo(const string &question) {
 int checkMenuChoice() {
 	int answer = 0;
 	while (true) {
+		//when user choose wrong menu
 		try {
 			editPrice("Menu choice: ",  answer,"Menu choice");
 			// check if menu choice is in range 1-19
@@ -89,6 +90,7 @@ void getMenuChoice(int answer, ProductHandler& productHandlerVector, EmployeeHan
 		auto* cosmetic = new Cosmetic;
 		cosmetic->editId();
 		productHandlerVector.importProduct(cosmetic);
+		delete cosmetic;
 	}
 	else if (answer == 3) {
 		cout << "Insert the product id you want to find: ";
@@ -115,10 +117,12 @@ void getMenuChoice(int answer, ProductHandler& productHandlerVector, EmployeeHan
 		productHandlerVector.sellProduct(employeeHandlerPointers);
 	}
 	else if (answer == 8) {
+		//sort products before show info
 		productHandlerVector.sortProducts();
 		productHandlerVector.showInfo();
 	}
 	else if (answer == 9) {
+		//sort products before save to file
 		productHandlerVector.sortProducts();
 		productHandlerVector.saveProductsToFile("All products");
 	}
@@ -146,18 +150,22 @@ void getMenuChoice(int answer, ProductHandler& productHandlerVector, EmployeeHan
 		employeeHandlerPointers.editEmployee(checkId);
 	}
 	else if (answer == 15) {
+		//sort employees before show info
 		employeeHandlerPointers.sortEmployees();
 		employeeHandlerPointers.showInfo();
 	}
 	else if (answer == 16) {
+		//sort employees before save to file
 		employeeHandlerPointers.sortEmployees();
 		employeeHandlerPointers.saveEmployeesToFile("All employees");
 	}
 	else if (answer == 17) {
+		//count the finance statement before show info
 		Management management(productHandlerVector,employeeHandlerPointers);
 		management.showInfo();;
 	}
 	else {
+		//count the finance statement before save to file
 		Management management(productHandlerVector,employeeHandlerPointers);
 		management.saveToFile("Statement");
 	}
