@@ -19,8 +19,8 @@ Management::Management(const ProductHandler &pro, const EmployeeHandler &emp) {
 Management::~Management() = default;
 
 void Management::showInfo() const {
-	cout << "Total cost: " << cost << endl
-	<< "Total revenue: " << revenue << endl
+	cout << fixed << setprecision(2) << "Total revenue: " << revenue << endl
+	<< "Total cost: " << cost << endl
 	<< "_____________________ " << endl
 	<< "Gross profit: " << profit << endl;
 }
@@ -31,7 +31,7 @@ void Management::saveToFile(const string& fileName) const {
 		cerr << "Could not open the file to writing." << endl;
 		return;
 	}
-	out << "Total cost: " << cost << endl
+	out << fixed << setprecision(2) << "Total cost: " << cost << endl
 			<< "Total revenue: " << revenue << endl
 			<< "_____________________ " << endl
 			<< "Gross profit: " << profit << endl;

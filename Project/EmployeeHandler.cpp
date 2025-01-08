@@ -70,10 +70,6 @@ EmployeeHandler& EmployeeHandler::operator=(const EmployeeHandler &other) {
 	return *this;
 }
 
-int EmployeeHandler::getNrOfCurrent() const {
-	return this->nrOfCurrent;
-}
-
 void EmployeeHandler::addEmployee() {
 	int id = -1;
 	editPrice("\nID: ", id, "ID");
