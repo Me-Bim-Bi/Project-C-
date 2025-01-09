@@ -48,7 +48,7 @@ EmployeeHandler::EmployeeHandler(int capacity) : capacity(capacity), nrOfCurrent
 
 EmployeeHandler::~EmployeeHandler() {
 	freeMemory();
-}
+}e
 
 EmployeeHandler::EmployeeHandler(const EmployeeHandler &other) : nrOfCurrent(other.nrOfCurrent),
 capacity(other.capacity), employees(new Employee*[other.capacity]{nullptr}) {
