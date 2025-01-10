@@ -326,7 +326,7 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 			}
 
 			if(productInformation.size() < 9) { //show the error message if the input data has not enough fields (min 9)
-				cerr << "Error on line: " << lineNumber <<". Unknown product format. Skipping..." << endl;
+				cerr << "File: " << fileName << ": Error on line: " << lineNumber <<". Unknown product format. Skipping..." << endl;
 				continue;
 			}
 			string productType= productInformation[0], name = productInformation[2];
@@ -348,7 +348,7 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 
 				if(productType == "Clothing") {   //check if product type is Clothing to add product
 					if(productInformation.size() != 10) {
-						cerr << "Error on line: " << lineNumber << ". Invalid data. Must be 10 fields. Skipping..." << endl;
+						cerr << "File: " << fileName << ": Error on line: " << lineNumber << ". Invalid data. Must be 10 fields. Skipping..." << endl;
 						continue;
 					}
 					const string& size = productInformation[8];
@@ -359,7 +359,7 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 				else if(productType == "Cosmetic") {
 					//check if product type is Cosmetic to add product
 					if(productInformation.size() != 9) {
-						cerr << "Error on line: " << lineNumber << ". Invalid data. Must be 9 fields. Skipping..." << endl;
+						cerr << "File: " << fileName << ": Error on line: " << lineNumber << ". Invalid data. Must be 9 fields. Skipping..." << endl;
 						continue;
 					}
 					const string& typeCosmetic = productInformation[8];
@@ -367,7 +367,7 @@ void ProductHandler::loadProductsFromFie(const string &fileName) {
 					quantitySold, quantityImported, typeCosmetic);
 				}
 				else {
-					cerr << "Error on line: " << lineNumber << ". Unknown product type. Skipping..." << endl;
+					cerr << "File: " << fileName << ": Error on line: " << lineNumber << ". Unknown product type. Skipping..." << endl;
 					continue;
 				}
 				importProductFromFile(product.get()); //add product - raw pointer

@@ -48,7 +48,7 @@ EmployeeHandler::EmployeeHandler(int capacity) : capacity(capacity), nrOfCurrent
 
 EmployeeHandler::~EmployeeHandler() {
 	freeMemory();
-}e
+}
 
 EmployeeHandler::EmployeeHandler(const EmployeeHandler &other) : nrOfCurrent(other.nrOfCurrent),
 capacity(other.capacity), employees(new Employee*[other.capacity]{nullptr}) {
@@ -254,7 +254,8 @@ void EmployeeHandler::loadEmployeesFromFie(const string &fileName) {
 			}
 
 			if(employeeInformation.size() != 4) {
-				cerr << "Error on line: " << lineNumber << ". Invalid data. Must be 4 fields. Skipping..." << endl;
+				cerr << "Error on line: " << lineNumber << " in file: " << fileName
+				<< " . Invalid data. Must be 4 fields. Skipping..." << endl;
 				continue;
 			}
 			try {

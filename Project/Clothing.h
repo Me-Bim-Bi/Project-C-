@@ -28,8 +28,6 @@ public:
 	string showInfo() const override;
 
 	Product* clone() const override;
-
-
 };
 
 
